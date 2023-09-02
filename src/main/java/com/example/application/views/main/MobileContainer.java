@@ -31,9 +31,22 @@ public class MobileContainer extends VerticalLayout {
                 break;
         }
 
-        this.getUI().get().access(() -> {
+        if (this.getUI().isPresent()) {
+            this.getUI().get().access(() -> {
+                this.removeAll();
+                this.add(this.currentView);
+            });
+        } else {
             this.removeAll();
             this.add(this.currentView);
+        }
+    }
+
+    public void switchToView(BaseView v) {
+        this.getUI().get().access(() -> {
+            currentView = v;
+            this.removeAll();
+            this.add(v);
         });
     }
 

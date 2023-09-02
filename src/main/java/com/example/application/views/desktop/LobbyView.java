@@ -17,7 +17,6 @@ import com.vaadin.flow.server.StreamResource;
 
 import javax.imageio.ImageIO;
 import javax.xml.transform.stream.StreamSource;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -36,7 +35,7 @@ import java.util.regex.Pattern;
 public class LobbyView extends BaseView {
 
     private HorizontalLayout playersContainer;
-    private Button btnStart;
+
     public LobbyView() {
         Text lblTitle = new Text("CodeCouch Lobby");
         Image imgQR = new Image();
@@ -57,8 +56,6 @@ public class LobbyView extends BaseView {
         } catch (WriterException e) {
             throw new RuntimeException(e);
         }
-        this.btnStart = new Button("Start Game");
-        btnStart.setEnabled(false);
 
         this.setAlignItems(Alignment.CENTER);
         this.setHorizontalComponentAlignment(Alignment.CENTER);
@@ -67,13 +64,12 @@ public class LobbyView extends BaseView {
 
     @Override
     public void update() {
-        playersContainer.getUI().get().access(() -> {
-            playersContainer.removeAll();
-            Game.getPlayers().stream().forEach(p -> playersContainer.add(new PlayerAvatarComponent(p)));
-            if (Game.getPlayers().size() > 1) {
-                btnStart.setEnabled(true);
-            }
-        });
+        if (playersContainer.getUI().isPresent()) {
+            playersContainer.getUI().get().access(() -> {
+                playersContainer.removeAll();
+                Game.getPlayers().stream().forEach(p -> playersContainer.add(new PlayerAvatarComponent(p)));
+            });
+        }
     }
 
     private String encodeToString(BufferedImage image, String type) {

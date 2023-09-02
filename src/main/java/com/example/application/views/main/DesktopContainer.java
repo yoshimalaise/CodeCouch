@@ -35,17 +35,34 @@ public class DesktopContainer extends HorizontalLayout {
                 break;
         }
 
-        this.getUI().get().access(() -> {
+        if (this.getUI().isPresent()) {
+            this.getUI().get().access(() -> {
+                this.removeAll();
+                this.add(this.currentView);
+            });
+        } else {
             this.removeAll();
             this.add(this.currentView);
+        }
+    }
+
+    public void switchToView(BaseView v) {
+        this.getUI().get().access(() -> {
+            currentView = v;
+            this.removeAll();
+            this.add(v);
         });
     }
 
     public void update() {
         if (this.currentView != null) {
-            this.currentView.getUI().get().access(() -> {
+            if (this.currentView.getUI().isPresent()) {
+                this.currentView.getUI().get().access(() -> {
+                    this.currentView.update();
+                });
+            } else {
                 this.currentView.update();
-            });
+            }
         }
     }
 
