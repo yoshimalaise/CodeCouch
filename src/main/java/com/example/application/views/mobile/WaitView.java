@@ -1,12 +1,19 @@
 package com.example.application.views.mobile;
 
+import com.example.application.bl.Game;
+import com.example.application.bl.commands.LoadNextLevelCommand;
 import com.example.application.views.main.BaseView;
-import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Span;
+
+
 
 public class WaitView extends BaseView {
 
     public WaitView() {
-        Text txtPleaseWait = new Text("Please wait while the host is setting up the game");
+        Span txtPleaseWait = new Span("Waiting for all players to get ready.");
+        Button btnContinue = new Button("Continue");
+        btnContinue.addClickListener(b -> Game.handleCommand(new LoadNextLevelCommand()));
         this.add(txtPleaseWait);
     }
 }
