@@ -43,7 +43,7 @@ public class DesktopContainer extends HorizontalLayout {
 
     public void update() {
         if (this.currentView != null) {
-            UI.getCurrent().access(() -> {
+            this.currentView.getUI().get().access(() -> {
                 this.currentView.update();
             });
         }

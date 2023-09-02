@@ -39,7 +39,7 @@ public class MobileContainer extends VerticalLayout {
 
     public void update() {
         if (this.currentView != null) {
-            UI.getCurrent().access(() -> {
+            this.getUI().get().getCurrent().access(() -> {
                 this.currentView.update();
             });
         }
