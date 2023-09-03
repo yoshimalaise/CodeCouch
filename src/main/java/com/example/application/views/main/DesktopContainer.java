@@ -1,17 +1,16 @@
 package com.example.application.views.main;
 
-import com.example.application.bl.Game;
+import com.example.application.model.jsTypes.JSResultCallback;
 import com.example.application.views.desktop.DesktopView;
 import com.example.application.views.desktop.HomeView;
 import com.example.application.views.desktop.LobbyView;
-import com.example.application.views.mobile.JoinView;
-import com.example.application.views.mobile.MobileView;
-import com.vaadin.flow.component.Key;
+import com.nimbusds.jose.shaded.gson.Gson;
+import com.nimbusds.jose.shaded.gson.JsonObject;
+import com.nimbusds.jose.shaded.gson.JsonParser;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.page.Page;
+import com.vaadin.flow.component.page.PendingJavaScriptResult;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -64,6 +63,18 @@ public class DesktopContainer extends HorizontalLayout {
                 this.currentView.update();
             }
         }
+    }
+
+    public static <T> void executeJavaScript(String script, Class<T> type, JSResultCallback<T> callback) {
+        Page page = UI.getCurrent().getPage();
+        PendingJavaScriptResult result = page.executeJs(script);
+        result.then(res -> {
+            Gson gson = new Gson();
+            JsonParser parser = new JsonParser();
+            JsonObject object = (JsonObject) parser.parse(res.toJson());// response will be the json String
+            T obj = gson.fromJson(object, type);
+            callback.call(obj);
+        });
     }
 
 }

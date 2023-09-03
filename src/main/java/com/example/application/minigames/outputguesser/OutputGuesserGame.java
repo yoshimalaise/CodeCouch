@@ -8,6 +8,11 @@ import com.example.application.views.main.BaseView;
 import com.example.application.views.mobile.WaitView;
 
 public class OutputGuesserGame implements BaseMiniGame {
+    private OutputGuesserMainView view;
+
+    public OutputGuesserGame() {
+        this.view = new OutputGuesserMainView();
+    }
 
     @Override
     public void handleCommand(BaseCommand command) {
@@ -26,6 +31,6 @@ public class OutputGuesserGame implements BaseMiniGame {
 
     @Override
     public BaseView getDesktopView() {
-        return new OutputGuesserMainView();
+        return this.view;
     }
 }
