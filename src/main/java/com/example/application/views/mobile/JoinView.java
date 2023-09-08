@@ -1,6 +1,7 @@
 package com.example.application.views.mobile;
 
 import com.example.application.bl.Game;
+import com.example.application.model.Player;
 import com.example.application.views.main.BaseView;
 import com.example.application.views.main.MobileContainer;
 import com.vaadin.flow.component.button.Button;
@@ -16,7 +17,8 @@ public class JoinView extends BaseView {
         TextField txtName = new TextField("Player name");
         Button btnJoin = new Button("Join game");
         btnJoin.addClickListener(event -> {
-            Game.addPlayer(txtName.getValue(), c);
+            Player p = Game.addPlayer(txtName.getValue(), c);
+            container.player = p;
             c.switchToView(MobileView.WAIT_VIEW);
         });
         this.add(txtName, btnJoin);

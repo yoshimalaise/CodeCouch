@@ -8,6 +8,10 @@ public class XYZResult {
     public XYZResult() {
     }
 
+    public static String getExtractionString() {
+        return "\n return ({x, y, z});";
+    }
+
     public int getX() {
         return x;
     }

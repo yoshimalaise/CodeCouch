@@ -1,5 +1,6 @@
 package com.example.application.views.main;
 
+import com.example.application.model.Player;
 import com.example.application.views.desktop.HomeView;
 import com.example.application.views.mobile.JoinView;
 import com.example.application.views.mobile.MobileView;
@@ -11,13 +12,20 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import java.util.ArrayList;
+import java.util.function.Function;
+
 @PageTitle("Main")
 @Route(value = "/mobile")
 public class MobileContainer extends VerticalLayout {
 
+    private static final ArrayList<MobileContainer> allMobiles = new ArrayList<>();
+
     private BaseView currentView;
+    public Player player;
 
     public MobileContainer() {
+        allMobiles.add(this);
         this.switchToView(MobileView.JOIN_VIEW);
     }
 
@@ -27,7 +35,7 @@ public class MobileContainer extends VerticalLayout {
                 this.currentView = new JoinView(this);
                 break;
             case WAIT_VIEW:
-                this.currentView = new WaitView();
+                this.currentView = new WaitView(player);
                 break;
         }
 
@@ -56,5 +64,9 @@ public class MobileContainer extends VerticalLayout {
                 this.currentView.update();
             });
         }
+    }
+
+    public static void switchAllMobileClientsToView(Function<Player,BaseView> vGenerator){
+        MobileContainer.allMobiles.forEach(m -> m.switchToView(vGenerator.apply(m.player)));
     }
 }

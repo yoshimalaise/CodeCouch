@@ -43,9 +43,11 @@ public abstract class Game {
         Game.desktopContainer.update();
     }
 
-    public static void addPlayer(String username, MobileContainer client) {
-        Game.players.add(new Player(username, client));
+    public static Player addPlayer(String username, MobileContainer client) {
+        Player p = new Player(username, client);
+        Game.players.add(p);
         Game.desktopContainer.update();
+        return p;
     }
 
     public static List<Player> getPlayers() {
@@ -61,7 +63,7 @@ public abstract class Game {
             Game.players.forEach(p -> p.getClient().switchToView(MobileView.WAIT_VIEW));
         } else if (command instanceof ContinueCommand && Game.state == GameState.SHOWING_TUTORIAL) {
             Game.desktopContainer.switchToView(Game.currentMiniGame.getDesktopView());
-            Game.players.forEach(p -> p.getClient().switchToView(Game.currentMiniGame.getMobileView()));
+            Game.players.forEach(p -> p.getClient().switchToView(Game.currentMiniGame.getMobileView(p)));
         } else {
             if (Game.currentMiniGame != null) {
                 Game.currentMiniGame.handleCommand(command);

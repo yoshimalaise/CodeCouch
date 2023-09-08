@@ -2,6 +2,7 @@ package com.example.application.minigames;
 
 import com.example.application.bl.commands.BaseCommand;
 import com.example.application.model.GameTutorial;
+import com.example.application.model.Player;
 import com.example.application.views.main.BaseView;
 
 public interface BaseMiniGame {
@@ -9,7 +10,7 @@ public interface BaseMiniGame {
 
     GameTutorial getTutorial();
 
-    BaseView getMobileView();
+    BaseView getMobileView(Player p);
 
     BaseView getDesktopView();
 }
