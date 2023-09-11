@@ -39,38 +39,41 @@ public class OutputGuesserMainView extends BaseView {
         this.roundCtr++;
         this.codeSnippet = XYZSnippetGenerator.generateXYZSnippet();
         DesktopContainer.executeJavaScript(this.codeSnippet + XYZResult.getExtractionString(), XYZResult.class, (res) -> {
-            // generate results for the generated code
-            String q = "What is the value of " + problemType
-                    +  " after executing the following program?";
-            solution = "" + (this.problemType == ProblemType.X_PROBLEM
-                    ? res.getX()
-                    : problemType == ProblemType.Y_PROBLEM
+                // generate results for the generated code
+                String q = "What is the value of " + problemType
+                        +  " after executing the following program?";
+                solution = "" + (this.problemType == ProblemType.X_PROBLEM
+                        ? res.getX()
+                        : problemType == ProblemType.Y_PROBLEM
                         ? res.getY()
                         : res.getZ());
-            List<String> possibleAnswers = new ArrayList<>() {{ add(solution); }};
-            Random rnd = new Random();
-            // TODO: generate smarter alternative responses
-            while (possibleAnswers.size() != 4){
-                int tmp = rnd.nextInt(-100, 100);
-                if (possibleAnswers.stream().noneMatch(s -> s.equals(tmp + ""))) {
-                    possibleAnswers.add(""+tmp);
+                List<String> possibleAnswers = new ArrayList<>() {{ add(solution); }};
+                Random rnd = new Random();
+                // TODO: generate smarter alternative responses
+                while (possibleAnswers.size() != 4){
+                    int tmp = rnd.nextInt(-100, 100);
+                    if (possibleAnswers.stream().noneMatch(s -> s.equals(tmp + ""))) {
+                        possibleAnswers.add(""+tmp);
+                    }
                 }
-            }
-            Collections.shuffle(possibleAnswers);
+                Collections.shuffle(possibleAnswers);
 
-            // show the components for the new round
-            this.removeAll();
-            HorizontalLayout answersContainer = new HorizontalLayout();
-            for (String possibleAnswer : possibleAnswers) {
-                Button btn = new Button();
-                btn.setText(possibleAnswer);
-                answersContainer.add(btn);
-            }
-            answersContainer.setSpacing(true);
-            answersContainer.setAlignItems(Alignment.STRETCH);
-            answersContainer.setVerticalComponentAlignment(Alignment.CENTER);
-            this.add(new H1(q), new CodeSnippet(codeSnippet), answersContainer);
-            MobileContainer.switchAllMobileClientsToView(p -> new PickOneOptionView(possibleAnswers, p));
-        });
+                // show the components for the new round
+                this.updateUIInLock(() -> {
+                    this.removeAll();
+                    HorizontalLayout answersContainer = new HorizontalLayout();
+                    for (String possibleAnswer : possibleAnswers) {
+                        Button btn = new Button();
+                        btn.setText(possibleAnswer);
+                        answersContainer.add(btn);
+                    }
+                    answersContainer.setSpacing(true);
+                    answersContainer.setAlignItems(Alignment.STRETCH);
+                    answersContainer.setVerticalComponentAlignment(Alignment.CENTER);
+                    this.add(new H1(q), new CodeSnippet(codeSnippet), answersContainer);
+                });
+
+                MobileContainer.switchAllMobileClientsToView(p -> new PickOneOptionView(possibleAnswers, p));
+            });
     }
 }
