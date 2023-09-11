@@ -5,6 +5,7 @@ import com.example.application.views.main.BaseView;
 import com.example.application.views.main.DesktopContainer;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.TextField;
 
@@ -16,6 +17,7 @@ public class HomeView extends BaseView {
         this.container = c;
 
         btnStart = new Button("Start Game");
+        btnStart.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         btnStart.addClickListener(e -> {
             Game.newGame(c);
         });

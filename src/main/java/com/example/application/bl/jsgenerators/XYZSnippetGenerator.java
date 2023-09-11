@@ -36,8 +36,6 @@ public abstract class XYZSnippetGenerator {
      * @return the snippet for the assignment
      */
     private static String generateDirectAssignment() {
-
-        // return `${getRandomElementFromArr(this.endSetVars)} = ${ getRandomElementFromArr(this.extendedEndSetVars)};`;
         return MyUtils.getRandomElFromList(endSetVars) + " = " + r.nextInt(-30, 31) + ";\n";
     }
 
