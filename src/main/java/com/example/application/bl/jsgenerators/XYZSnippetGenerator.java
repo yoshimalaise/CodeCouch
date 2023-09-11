@@ -12,6 +12,8 @@ public abstract class XYZSnippetGenerator {
 
     private static final ArrayList<Supplier<String>> generators =  new ArrayList<>(){{
        add(XYZSnippetGenerator::generateDirectAssignment);
+       add(XYZSnippetGenerator::generateIfBlock);
+       add(XYZSnippetGenerator::generateSwapBlock);
     }};
 
     private static final ArrayList<String> endSetVars = new ArrayList<>(){{
@@ -37,6 +39,29 @@ public abstract class XYZSnippetGenerator {
      */
     private static String generateDirectAssignment() {
         return MyUtils.getRandomElFromList(endSetVars) + " = " + r.nextInt(-30, 31) + ";\n";
+    }
+
+    private static String generateSwapBlock() {
+        String newVar = getNextVar();
+        String el1 = MyUtils.getRandomElFromList(endSetVars);
+        String el2 = MyUtils.getRandomElFromList(endSetVars.stream().filter(el -> !el.equals(el1)).toList());
+        return  "let " + newVar+ " = " + el1 + ";\n" +
+                el1 + " = " + el2 + ";\n" +
+                el2 + " = " + newVar + ";\n";
+    }
+
+    private static String generateIfBlock() {
+        String newVarName = getNextVar();
+        return ("let " + newVarName + " = " + r.nextInt(0, 21) + ";\n" +
+                "if (" + newVarName + " " + MyUtils.getRandomElFromList(comparators) + " " + r.nextInt(0, 21) + "){\n" +
+                "    " + generateDirectAssignment() +
+                "}\n");
+    }
+
+    private static String getNextVar() {
+        String nextVar = List.of("a", "b", "c", "d", "e", "f", "g", "h", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "foo", "bar", "buzz").get(varCtr++);
+        declaredVars.add(nextVar);
+        return nextVar;
     }
 
     private static String generateVarDeclarationSnippet(){
