@@ -96,7 +96,7 @@ public class OutputGuesserMainView extends BaseView {
                     answersContainer.setVerticalComponentAlignment(Alignment.CENTER);
 
                     this.playersOverview = new PlayersOverview();
-                    this.add(new H1(q), new CodeSnippet(codeSnippet), answersContainer, playersOverview);
+                    this.add(roundOverview, new H1(q), new CodeSnippet(codeSnippet), answersContainer, playersOverview);
                 });
 
                 MobileContainer.switchAllMobileClientsToView(p -> new PickOneOptionView(possibleAnswers, p));
@@ -125,7 +125,7 @@ public class OutputGuesserMainView extends BaseView {
 
         if (MyUtils.allPlayersAnswered()){
             try {
-                sleep(1000);
+                sleep(3000);
                 this.loadNextRound();
             } catch (InterruptedException e) {
                 this.loadNextRound();

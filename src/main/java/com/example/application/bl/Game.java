@@ -2,6 +2,7 @@ package com.example.application.bl;
 
 import com.example.application.bl.commands.BaseCommand;
 import com.example.application.bl.commands.ContinueCommand;
+import com.example.application.bl.utils.MyUtils;
 import com.example.application.minigames.BaseMiniGame;
 import com.example.application.minigames.outputguesser.OutputGuesserGame;
 import com.example.application.model.GameState;
@@ -72,11 +73,14 @@ public abstract class Game {
     }
 
     public static void loadNextMiniGame(){
+        clearPlayersRoundInfo();
         Game.currentGameCtr++;
         Game.state = GameState.SHOWING_TUTORIAL;
         Collections.shuffle(Game.generators);
-        Game.desktopContainer.switchToView(DesktopView.LOBBY);
-        Game.desktopContainer.update();
+        Game.currentMiniGame = Game.generators.get(Game.currentGameCtr).get();
+        Game.state = GameState.SHOWING_TUTORIAL;
+        Game.desktopContainer.switchToView(new TutorialView(Game.currentMiniGame.getTutorial()));
+        Game.players.forEach(p -> p.getClient().switchToView(MobileView.WAIT_VIEW));
     }
 
     public static void clearPlayersRoundInfo() {

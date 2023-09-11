@@ -9,18 +9,19 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 public class PlayerAvatarComponent extends VerticalLayout {
-    private Player player;
+
 
     public PlayerAvatarComponent(Player p) {
-        this.player = p;
         setAlignItems(Alignment.CENTER);
         setHorizontalComponentAlignment(Alignment.CENTER);
         add(new Icon(p.hasAnswered ? VaadinIcon.CHECK_CIRCLE : VaadinIcon.CIRCLE));
         add(new Span(p.getName()));
         add(new Span(p.getScore()+ ""));
-        Span roundMsg = new Span(p.roundMessage);
-        roundMsg.getStyle().set("color", "green");
-        add(roundMsg);
+        if (p.roundMessage != null && p.roundMessage.length() > 0){
+            Span roundMsg = new Span(p.roundMessage);
+            roundMsg.getStyle().set("color", "green");
+            add(roundMsg);
+        }
         setPadding(true);
         setWidthFull();
     }
