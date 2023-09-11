@@ -70,4 +70,19 @@ public abstract class Game {
             }
         }
     }
+
+    public static void loadNextMiniGame(){
+        Game.currentGameCtr++;
+        Game.state = GameState.SHOWING_TUTORIAL;
+        Collections.shuffle(Game.generators);
+        Game.desktopContainer.switchToView(DesktopView.LOBBY);
+        Game.desktopContainer.update();
+    }
+
+    public static void clearPlayersRoundInfo() {
+        for (Player player : players) {
+            player.clearRoundInfo();
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.example.application.minigames.outputguesser;
 
 import com.example.application.bl.commands.BaseCommand;
+import com.example.application.bl.commands.StringAnswerCommand;
 import com.example.application.minigames.BaseMiniGame;
 import com.example.application.minigames.outputguesser.components.OutputGuesserMainView;
 import com.example.application.model.GameTutorial;
@@ -17,7 +18,9 @@ public class OutputGuesserGame implements BaseMiniGame {
 
     @Override
     public void handleCommand(BaseCommand command) {
-
+        if (command instanceof StringAnswerCommand c) {
+            view.handleAnswer(c.player, c.getAnswer());
+        }
     }
 
     @Override

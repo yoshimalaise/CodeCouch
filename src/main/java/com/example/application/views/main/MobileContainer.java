@@ -67,6 +67,7 @@ public class MobileContainer extends VerticalLayout {
     }
 
     public static void switchAllMobileClientsToView(Function<Player,BaseView> vGenerator){
-        MobileContainer.allMobiles.forEach(m -> m.switchToView(vGenerator.apply(m.player)));
+        MobileContainer.allMobiles.forEach(m -> {
+            try {m.switchToView(vGenerator.apply(m.player));} catch (Exception e) {} });
     }
 }

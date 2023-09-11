@@ -9,4 +9,8 @@ public class StringAnswerCommand extends BaseCommand{
         super(player);
         this.answer = answer;
     }
+
+    public String getAnswer() {
+        return answer;
+    }
 }

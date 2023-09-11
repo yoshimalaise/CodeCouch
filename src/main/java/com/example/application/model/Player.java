@@ -7,33 +7,35 @@ public class Player {
     private int score;
     private MobileContainer client;
 
+    public boolean hasAnswered;
+    public String roundMessage;
+
     public Player(String name, MobileContainer client) {
         this.name = name;
         this.client = client;
         this.score = 0;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
+        this.hasAnswered = false;
     }
 
     public MobileContainer getClient() {
         return client;
     }
 
-    public void setClient(MobileContainer client) {
-        this.client = client;
+    public String getName() {
+        return name;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void clearRoundInfo() {
+        this.hasAnswered = false;
+        this.roundMessage = "";
+    }
+
+    public void increaseScore(int score) {
+        this.score += score;
+        this.roundMessage = "+" + score;
     }
 }

@@ -15,12 +15,13 @@ public class PlayerAvatarComponent extends VerticalLayout {
         this.player = p;
         setAlignItems(Alignment.CENTER);
         setHorizontalComponentAlignment(Alignment.CENTER);
-
-        Icon icon = new Icon(VaadinIcon.ACADEMY_CAP);
-        Span lblName = new Span(p.getName());
-        Span lblScore = new Span(p.getScore()+ "");
+        add(new Icon(p.hasAnswered ? VaadinIcon.CHECK_CIRCLE : VaadinIcon.CIRCLE));
+        add(new Span(p.getName()));
+        add(new Span(p.getScore()+ ""));
+        Span roundMsg = new Span(p.roundMessage);
+        roundMsg.getStyle().set("color", "green");
+        add(roundMsg);
         setPadding(true);
-        add(icon, lblName, lblScore);
         setWidthFull();
     }
 }
