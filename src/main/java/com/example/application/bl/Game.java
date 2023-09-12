@@ -4,6 +4,8 @@ import com.example.application.bl.commands.BaseCommand;
 import com.example.application.bl.commands.ContinueCommand;
 import com.example.application.minigames.BaseMiniGame;
 import com.example.application.minigames.outputguesser.OutputGuesserGameFactory;
+import com.example.application.minigames.trueOrFalse.TrueOrFalseGameFactory;
+import com.example.application.minigames.trueOrFalse.chapter.ChapterOne;
 import com.example.application.model.GameState;
 import com.example.application.model.BaseGameFactory;
 import com.example.application.model.Player;
@@ -15,7 +17,9 @@ import com.example.application.views.mobile.MobileView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public abstract class Game {
@@ -25,9 +29,14 @@ public abstract class Game {
     private static GameState state;
 
     private static int currentGameCtr = 0;
-    public final static ArrayList<BaseGameFactory> generators = new ArrayList<>() {{
-        add(new OutputGuesserGameFactory());
-    }};
+    public final static ArrayList<BaseGameFactory> generators = (new ArrayList<BaseGameFactory>() {{
+                            add(new OutputGuesserGameFactory());
+
+                            // add all the chapter true or false levels
+                            add(new TrueOrFalseGameFactory<ChapterOne>(ChapterOne.NAME, ChapterOne::new));
+                        }}).stream()
+                            .sorted(Comparator.comparing(f -> f.name))
+                            .collect(Collectors.toCollection(ArrayList::new));
 
     private static List<BaseGameFactory> selectedGenerators;
 

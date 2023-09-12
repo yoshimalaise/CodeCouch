@@ -3,7 +3,7 @@ package com.example.application.minigames.trueOrFalse;
 import com.example.application.bl.commands.BaseCommand;
 import com.example.application.bl.commands.StringAnswerCommand;
 import com.example.application.minigames.BaseMiniGame;
-import com.example.application.minigames.trueOrFalse.chapter.IChapter;
+import com.example.application.minigames.trueOrFalse.chapter.BaseChapter;
 import com.example.application.minigames.trueOrFalse.model.TrueOrFalseRound;
 import com.example.application.minigames.trueOrFalse.model.TrueOrFalseType;
 import com.example.application.model.GameTutorial;
@@ -17,11 +17,11 @@ public class TrueOrFalseGame implements BaseMiniGame {
     private Random r = new Random();
     private TrueOrFalseView view;
 
-    private IChapter chapter;
+    private BaseChapter chapter;
 
 
 
-    public TrueOrFalseGame(IChapter chapter) {
+    public TrueOrFalseGame(BaseChapter chapter) {
         this.chapter = chapter;
     }
 
