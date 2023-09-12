@@ -19,7 +19,7 @@ public class JoinView extends BaseView {
         btnJoin.addClickListener(event -> {
             Player p = Game.addPlayer(txtName.getValue(), c);
             container.player = p;
-            c.switchToView(MobileView.WAIT_VIEW);
+            c.switchToView(new SessionSetupView(p));
         });
         this.add(txtName, btnJoin);
         this.setHorizontalComponentAlignment(Alignment.CENTER);

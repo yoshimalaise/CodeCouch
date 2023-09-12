@@ -2,10 +2,10 @@ package com.example.application.bl;
 
 import com.example.application.bl.commands.BaseCommand;
 import com.example.application.bl.commands.ContinueCommand;
-import com.example.application.bl.utils.MyUtils;
 import com.example.application.minigames.BaseMiniGame;
-import com.example.application.minigames.outputguesser.OutputGuesserGame;
+import com.example.application.minigames.outputguesser.OutputGuesserGameFactory;
 import com.example.application.model.GameState;
+import com.example.application.model.BaseGameFactory;
 import com.example.application.model.Player;
 import com.example.application.views.desktop.DesktopView;
 import com.example.application.views.desktop.TutorialView;
@@ -16,7 +16,6 @@ import com.example.application.views.mobile.MobileView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 
 
 public abstract class Game {
@@ -26,10 +25,11 @@ public abstract class Game {
     private static GameState state;
 
     private static int currentGameCtr = 0;
-    private final static ArrayList<Supplier<BaseMiniGame>> generators = new ArrayList<Supplier<BaseMiniGame>>() {{
-        add(OutputGuesserGame::new);
+    public final static ArrayList<BaseGameFactory> generators = new ArrayList<>() {{
+        add(new OutputGuesserGameFactory());
     }};
 
+    private static List<BaseGameFactory> selectedGenerators;
 
     private static List<Player> players = new ArrayList<>();
     private static DesktopContainer desktopContainer;
@@ -40,6 +40,7 @@ public abstract class Game {
         Game.players = new ArrayList<>();
         Game.desktopContainer = c;
         Collections.shuffle(Game.generators);
+        selectedGenerators = generators.stream().filter(f -> f.included).toList();
         Game.desktopContainer.switchToView(DesktopView.LOBBY);
         Game.desktopContainer.update();
     }
@@ -58,7 +59,7 @@ public abstract class Game {
     public static void handleCommand(BaseCommand command) {
         if (command instanceof ContinueCommand && (Game.state == GameState.SHOWING_SCORES || Game.state == GameState.NEW)) {
             Game.currentGameCtr++;
-            Game.currentMiniGame = Game.generators.get(Game.currentGameCtr).get();
+            Game.currentMiniGame = Game.generators.get(Game.currentGameCtr).build();
             Game.state = GameState.SHOWING_TUTORIAL;
             Game.desktopContainer.switchToView(new TutorialView(Game.currentMiniGame.getTutorial()));
             Game.players.forEach(p -> p.getClient().switchToView(MobileView.WAIT_VIEW));
@@ -76,9 +77,7 @@ public abstract class Game {
         clearPlayersRoundInfo();
         Game.currentGameCtr++;
         Game.state = GameState.SHOWING_TUTORIAL;
-        Collections.shuffle(Game.generators);
-        Game.currentMiniGame = Game.generators.get(Game.currentGameCtr).get();
-        Game.state = GameState.SHOWING_TUTORIAL;
+        Game.currentMiniGame = Game.selectedGenerators.get(Game.currentGameCtr).build();
         Game.desktopContainer.switchToView(new TutorialView(Game.currentMiniGame.getTutorial()));
         Game.players.forEach(p -> p.getClient().switchToView(MobileView.WAIT_VIEW));
     }
@@ -88,5 +87,11 @@ public abstract class Game {
             player.clearRoundInfo();
         }
     }
+
+    public static void updateAllScreens() {
+        Game.desktopContainer.update();
+        players.forEach(p -> p.getClient().update());
+    }
+
 
 }
