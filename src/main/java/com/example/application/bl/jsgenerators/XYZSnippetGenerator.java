@@ -14,6 +14,8 @@ public abstract class XYZSnippetGenerator {
        add(XYZSnippetGenerator::generateDirectAssignment);
        add(XYZSnippetGenerator::generateIfBlock);
        add(XYZSnippetGenerator::generateSwapBlock);
+       add(XYZSnippetGenerator::generateAdditionBlock);
+       add(XYZSnippetGenerator::generateSubtractionBlock);
     }};
 
     private static final ArrayList<String> endSetVars = new ArrayList<>(){{
@@ -48,6 +50,22 @@ public abstract class XYZSnippetGenerator {
         return  "let " + newVar+ " = " + el1 + ";\n" +
                 el1 + " = " + el2 + ";\n" +
                 el2 + " = " + newVar + ";\n";
+    }
+
+    private static String generateAdditionBlock() {
+        if (declaredVars.size() > 0 && r.nextInt(1, 3) == 1) {
+            Collections.shuffle(declaredVars);
+            return  MyUtils.getRandomElFromList(endSetVars) + " += " + declaredVars.get(0) + ";\n";
+        }
+        return  MyUtils.getRandomElFromList(endSetVars) + " += " + r.nextInt(-20, 20) + ";\n";
+    }
+
+    private static String generateSubtractionBlock() {
+        if (declaredVars.size() > 0 && r.nextInt(1, 3) == 1) {
+            Collections.shuffle(declaredVars);
+            return  MyUtils.getRandomElFromList(endSetVars) + " -= " + declaredVars.get(0) + ";\n";
+        }
+        return  MyUtils.getRandomElFromList(endSetVars) + " -= " + r.nextInt(-20, 20) + ";\n";
     }
 
     private static String generateIfBlock() {
