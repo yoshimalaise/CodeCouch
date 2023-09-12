@@ -82,7 +82,7 @@ public abstract class XYZSnippetGenerator {
         return nextVar;
     }
 
-    private static String generateVarDeclarationSnippet(){
+    private static String generateVarDeclarationSnippet() {
         return "let x = " + r.nextInt(-30, 31) + ";\n" +
                 "let y = " + r.nextInt(-30, 31) + ";\n" +
                 "let z = " + r.nextInt(-30, 31) + ";\n";
