@@ -5,7 +5,7 @@
     <!-- Project from https://start.vaadin.com/project/6e4cc088-add4-4881-96ee-35e735943eee -->
     <groupId>com.example.application</groupId>
     <artifactId>mytodo</artifactId>
-    <name>mytodo</name>
+    <name>CodeCouch</name>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -98,6 +98,7 @@
     </dependencies>
 
     <build>
+        <finalName>CodeCouch</finalName>
         <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
             <plugin>
@@ -121,6 +122,21 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>com.example.application.Application</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>
