@@ -29,14 +29,7 @@ public abstract class Game {
     private static GameState state;
 
     private static int currentGameCtr = 0;
-    public final static ArrayList<BaseGameFactory> generators = (new ArrayList<BaseGameFactory>() {{
-                            add(new OutputGuesserGameFactory());
-
-                            // add all the chapter true or false levels
-                            add(new TrueOrFalseGameFactory<ChapterOne>(ChapterOne.NAME, ChapterOne::new));
-                        }}).stream()
-                            .sorted(Comparator.comparing(f -> f.name))
-                            .collect(Collectors.toCollection(ArrayList::new));
+    public final static ArrayList<BaseGameFactory> generators = MiniGameFactoryCollection.getAllFactories();
 
     private static List<BaseGameFactory> selectedGenerators;
 
