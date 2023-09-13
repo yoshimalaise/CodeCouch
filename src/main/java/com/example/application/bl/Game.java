@@ -68,13 +68,12 @@ public abstract class Game {
     public static void handleCommand(BaseCommand command) {
         if (command instanceof ContinueCommand && (Game.state == GameState.SHOWING_SCORES || Game.state == GameState.NEW)) {
             Game.currentGameCtr++;
-            Game.currentMiniGame = Game.generators.get(Game.currentGameCtr).build();
+            Game.currentMiniGame = Game.generators.get(Game.currentGameCtr % generators.size()).build();
             Game.state = GameState.SHOWING_TUTORIAL;
             Game.desktopContainer.switchToView(new TutorialView(Game.currentMiniGame.getTutorial()));
             Game.players.forEach(p -> p.getClient().switchToView(MobileView.WAIT_VIEW));
         } else if (command instanceof ContinueCommand && Game.state == GameState.SHOWING_TUTORIAL) {
             Game.desktopContainer.switchToView(Game.currentMiniGame.getDesktopView());
-            Game.players.forEach(p -> p.getClient().switchToView(Game.currentMiniGame.getMobileView(p)));
         } else {
             if (Game.currentMiniGame != null) {
                 Game.currentMiniGame.handleCommand(command);

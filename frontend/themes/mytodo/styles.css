@@ -20,3 +20,8 @@ body {
   background: #33CCCC; /* Fallback */
   animation: color 9s infinite linear;
 }
+
+.answer-box  {
+    background-color: #33333333;
+    padding: 10px;
+}

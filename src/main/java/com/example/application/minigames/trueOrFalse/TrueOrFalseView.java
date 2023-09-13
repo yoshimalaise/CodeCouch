@@ -5,6 +5,7 @@ import com.example.application.bl.utils.MyUtils;
 import com.example.application.minigames.trueOrFalse.model.TrueOrFalseRound;
 import com.example.application.model.Player;
 import com.example.application.model.answers.StringAnswer;
+import com.example.application.views.desktop.components.AnswerBox;
 import com.example.application.views.desktop.components.PlayersOverview;
 import com.example.application.views.main.BaseView;
 import com.example.application.views.main.MobileContainer;
@@ -15,7 +16,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.Thread.sleep;
 
@@ -52,22 +55,22 @@ public class TrueOrFalseView extends BaseView {
 
             HorizontalLayout roundOverview = new HorizontalLayout();
             roundOverview.setAlignItems(Alignment.END);
-            roundOverview.add(new Span("Round "  + roundCtr + "/" + rounds.size()));
+            roundOverview.add(new Span("Round "  + (roundCtr + 1) + "/" + rounds.size()));
 
-            Span question = new Span(rounds.get(roundCtr).description);
+            VerticalLayout question = new VerticalLayout();
+            for (String s : rounds.get(roundCtr).description.split("\n")) {
+                question.add(new Span(s));
+            }
 
             VerticalLayout answersContainer = new VerticalLayout();
             for (String possibleAnswer : rounds.get(roundCtr).options) {
-                Button btn = new Button();
-                btn.setText(possibleAnswer);
-                answersContainer.add(btn);
+                answersContainer.add(new AnswerBox(possibleAnswer));
             }
             answersContainer.setSpacing(true);
             answersContainer.setAlignItems(Alignment.STRETCH);
             answersContainer.setHorizontalComponentAlignment(Alignment.CENTER);
 
             this.playersOverview = new PlayersOverview();
-
             add(roundOverview, question, answersContainer, playersOverview);
         });
 
