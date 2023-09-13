@@ -40,7 +40,7 @@ public class SessionSetupView extends BaseView {
             c.setLabel(factory.name);
             c.setValue(factory.included);
             c.addValueChangeListener(e -> {
-                factory.included = c.getValue();
+                factory.included = e.getValue();
                 Game.updateAllScreens();
             });
             return c;

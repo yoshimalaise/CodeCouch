@@ -48,8 +48,6 @@ public abstract class Game {
         Game.state = GameState.NEW;
         Game.players = new ArrayList<>();
         Game.desktopContainer = c;
-        Collections.shuffle(Game.generators);
-        selectedGenerators = generators.stream().filter(f -> f.included).toList();
         Game.desktopContainer.switchToView(DesktopView.LOBBY);
         Game.desktopContainer.update();
     }
@@ -67,11 +65,9 @@ public abstract class Game {
 
     public static void handleCommand(BaseCommand command) {
         if (command instanceof ContinueCommand && (Game.state == GameState.SHOWING_SCORES || Game.state == GameState.NEW)) {
-            Game.currentGameCtr++;
-            Game.currentMiniGame = Game.generators.get(Game.currentGameCtr % generators.size()).build();
-            Game.state = GameState.SHOWING_TUTORIAL;
-            Game.desktopContainer.switchToView(new TutorialView(Game.currentMiniGame.getTutorial()));
-            Game.players.forEach(p -> p.getClient().switchToView(MobileView.WAIT_VIEW));
+            Collections.shuffle(Game.generators);
+            selectedGenerators = generators.stream().filter(f -> f.included).toList();
+            loadNextMiniGame();
         } else if (command instanceof ContinueCommand && Game.state == GameState.SHOWING_TUTORIAL) {
             Game.desktopContainer.switchToView(Game.currentMiniGame.getDesktopView());
         } else {
@@ -85,7 +81,7 @@ public abstract class Game {
         clearPlayersRoundInfo();
         Game.currentGameCtr++;
         Game.state = GameState.SHOWING_TUTORIAL;
-        Game.currentMiniGame = Game.selectedGenerators.get(Game.currentGameCtr).build();
+        Game.currentMiniGame = Game.selectedGenerators.get(Game.currentGameCtr % selectedGenerators.size()).build();
         Game.desktopContainer.switchToView(new TutorialView(Game.currentMiniGame.getTutorial()));
         Game.players.forEach(p -> p.getClient().switchToView(MobileView.WAIT_VIEW));
     }
