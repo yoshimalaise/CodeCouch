@@ -45,14 +45,11 @@ public class Application implements AppShellConfigurator  {
                         try {
                             Desktop.getDesktop().browse(new URI("http://localhost:8080"));
                             // try to change the logo
-                            JFrame f = new JFrame();
+
                             URL url = getClass().getClassLoader().getResource("CodeCouchLogo.png");
-                            f.setIconImage(Toolkit.getDefaultToolkit().getImage(url));
-                            f.setVisible(false);
                             if (Taskbar.isTaskbarSupported()) {
                                 Taskbar.getTaskbar().setIconImage(ImageIO.read(new File(url.getFile())));
                             }
-
                         } catch (Exception ex) {
                             System.out.println("Could not change taskbar logo");
                         }
