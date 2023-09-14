@@ -1,17 +1,21 @@
 package com.example.application.minigames.resultguesser;
 
 import com.example.application.bl.Game;
+import com.example.application.bl.jsgenerators.FunctionCallSnippetGenerator;
 import com.example.application.bl.jsgenerators.XYZSnippetGenerator;
 import com.example.application.bl.utils.MyUtils;
 import com.example.application.minigames.outputguesser.ProblemType;
 import com.example.application.model.Player;
 import com.example.application.model.answers.StringAnswer;
+import com.example.application.model.jsTypes.JSFunctionCallResult;
 import com.example.application.model.jsTypes.XYZResult;
+import com.example.application.views.desktop.components.AnswerBox;
 import com.example.application.views.desktop.components.CodeSnippet;
 import com.example.application.views.desktop.components.PlayersOverview;
 import com.example.application.views.main.BaseView;
 import com.example.application.views.main.DesktopContainer;
 import com.example.application.views.main.MobileContainer;
+import com.example.application.views.mobile.NumberInputView;
 import com.example.application.views.mobile.PickOneOptionView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -26,10 +30,15 @@ import java.util.Random;
 import static java.lang.Thread.sleep;
 
 public class ResultGuesserGameView extends BaseView {
+    private int x;
+    private int y;
+    private int z;
+
+    Random r = new Random();
 
     private int roundCtr;
     private final int maxRoundCounts = 5;
-    private ProblemType problemType;
+
     private String codeSnippet;
     private String solution;
 
@@ -51,33 +60,15 @@ public class ResultGuesserGameView extends BaseView {
         }
         Game.clearPlayersRoundInfo();
         this.answers = new ArrayList<>();
-        List<ProblemType> types = new ArrayList<ProblemType>() {{
-            add(ProblemType.X_PROBLEM);
-            add(ProblemType.Y_PROBLEM);
-            add(ProblemType.Z_PROBLEM);
-        }};
-        Collections.shuffle(types);
-        this.problemType = types.get(0);
-        this.codeSnippet = XYZSnippetGenerator.generateXYZSnippet();
-        DesktopContainer.executeJavaScript(this.codeSnippet + XYZResult.getExtractionString(), XYZResult.class, (res) -> {
+
+        x = r.nextInt(-50,50);
+        y = r.nextInt(-50,50);
+        z = r.nextInt(-50,50);
+        this.codeSnippet = FunctionCallSnippetGenerator.generateSnippet();
+        DesktopContainer.executeJavaScript(this.codeSnippet + JSFunctionCallResult.getExtractionString(x,y,z), JSFunctionCallResult.class, (res) -> {
             // generate results for the generated code
-            String q = "What is the value of " + problemType
-                    +  " after executing the following program?";
-            solution = "" + (this.problemType == ProblemType.X_PROBLEM
-                    ? res.getX()
-                    : problemType == ProblemType.Y_PROBLEM
-                    ? res.getY()
-                    : res.getZ());
-            List<String> possibleAnswers = new ArrayList<>() {{ add(solution); }};
-            Random rnd = new Random();
-            // TODO: generate smarter alternative responses
-            while (possibleAnswers.size() != 4){
-                int tmp = rnd.nextInt(-100, 100);
-                if (possibleAnswers.stream().noneMatch(s -> s.equals(tmp + ""))) {
-                    possibleAnswers.add(""+tmp);
-                }
-            }
-            Collections.shuffle(possibleAnswers);
+            String q = "What would be the result of the function call if we pass the following arguments?";
+            solution = "" + res.getRes();
 
             // show the components for the new round
             this.updateUIInLock(() -> {
@@ -87,21 +78,20 @@ public class ResultGuesserGameView extends BaseView {
                 roundOverview.setAlignItems(Alignment.END);
                 roundOverview.add(new Span("Round "  + roundCtr + "/" + maxRoundCounts));
 
-                HorizontalLayout answersContainer = new HorizontalLayout();
-                for (String possibleAnswer : possibleAnswers) {
-                    Button btn = new Button();
-                    btn.setText(possibleAnswer);
-                    answersContainer.add(btn);
-                }
-                answersContainer.setSpacing(true);
-                answersContainer.setAlignItems(Alignment.STRETCH);
-                answersContainer.setVerticalComponentAlignment(Alignment.CENTER);
+                HorizontalLayout argsBoxContainer = new HorizontalLayout();
+                argsBoxContainer.add(new AnswerBox("x: " + x+""));
+                argsBoxContainer.add(new AnswerBox("y: " + y+""));
+                argsBoxContainer.add(new AnswerBox("z: " + z+""));
+                argsBoxContainer.setSpacing(true);
+                argsBoxContainer.setAlignItems(Alignment.STRETCH);
+                argsBoxContainer.setVerticalComponentAlignment(Alignment.CENTER);
 
                 this.playersOverview = new PlayersOverview();
-                this.add(roundOverview, new H1(q), new CodeSnippet(codeSnippet), answersContainer, playersOverview);
+
+                this.add(roundOverview, new H1(q), argsBoxContainer, new CodeSnippet(codeSnippet), playersOverview);
             });
 
-            MobileContainer.switchAllMobileClientsToView(p -> new PickOneOptionView(possibleAnswers, p));
+            MobileContainer.switchAllMobileClientsToView(NumberInputView::new);
         });
     }
     public void handleAnswer(Player player, String answer) {

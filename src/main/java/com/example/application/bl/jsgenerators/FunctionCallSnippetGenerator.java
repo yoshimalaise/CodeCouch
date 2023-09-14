@@ -14,7 +14,6 @@ public abstract class FunctionCallSnippetGenerator {
     private static final ArrayList<String> mathOperators = new ArrayList<>(){{
         add("+");
         add("-");
-        add("*");
         add("%");
     }};
 
@@ -74,8 +73,8 @@ public abstract class FunctionCallSnippetGenerator {
     public static String generateSnippet() {
         String innerBody = FunctionCallSnippetGenerator.generateXYZSnippet();
         return "function doMagic(x, y ,z) {\n" +
-                Arrays.stream(innerBody.split("\n")).map( l -> "    " + l).reduce("", (acc, l) -> acc + "    " + l + "\n") +
-                generateReturnStatement() +
+                Arrays.stream(innerBody.split("\n")).reduce("", (acc, l) -> acc + "    " + l + "\n") +
+                "    " + generateReturnStatement() +
                 "}";
     }
 

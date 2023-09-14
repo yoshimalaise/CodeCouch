@@ -23,11 +23,7 @@ public class ResultGuesserGame implements BaseMiniGame {
 
     @Override
     public GameTutorial getTutorial() {
-        return new OutputGuesserTutorial();
-    }
-
-    public BaseView getMobileView(Player player) {
-        return new WaitView(player);
+        return new ResultGuesserTutorial();
     }
 
     @Override
