@@ -41,19 +41,22 @@ public class Application implements AppShellConfigurator  {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-                        try {
-                            Desktop.getDesktop().browse(new URI("http://localhost:8080"));
-                            // try to change the logo
 
-                            URL url = getClass().getClassLoader().getResource("CodeCouchLogo.png");
-                            if (Taskbar.isTaskbarSupported()) {
-                                Taskbar.getTaskbar().setIconImage(ImageIO.read(new File(url.getFile())));
-                            }
-                        } catch (Exception ex) {
-                            System.out.println("Could not change taskbar logo");
+                    try {
+                        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+                            Desktop.getDesktop().browse(new URI("http://localhost:8080"));
                         }
+
+                        // try to change the logo
+
+                        URL url = getClass().getClassLoader().getResource("CodeCouchLogo.png");
+                        if (Taskbar.isTaskbarSupported()) {
+                            Taskbar.getTaskbar().setIconImage(ImageIO.read(new File(url.getFile())));
+                        }
+                    } catch (Exception ex) {
+                        System.out.println("Could not change taskbar logo");
                     }
+
                 }
             });
             thread.start();

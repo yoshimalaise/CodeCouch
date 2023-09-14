@@ -10,6 +10,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.function.Function;
 
 @PageTitle("Main")
 @Route(value = "/mobile")
+@PreserveOnRefresh
 public class MobileContainer extends VerticalLayout {
 
     private static final ArrayList<MobileContainer> allMobiles = new ArrayList<>();

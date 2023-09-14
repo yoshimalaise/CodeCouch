@@ -18,7 +18,7 @@ public class HomeView extends BaseView {
         this.container = c;
 
         Image imgLogo = new Image("icons/CodeCouchLogo.png", "The logo");
-        imgLogo.setWidth("256px");
+        imgLogo.setWidth("40%");
 
         btnStart = new Button("Start Game");
         btnStart.addThemeVariants(ButtonVariant.LUMO_PRIMARY);

@@ -11,6 +11,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.StreamResource;
@@ -57,9 +58,11 @@ public class LobbyView extends BaseView {
             throw new RuntimeException(e);
         }
 
+        Span lblInstructions = new Span("Scan the QR code with your phone to join the game.");
+
         this.setAlignItems(Alignment.CENTER);
         this.setHorizontalComponentAlignment(Alignment.CENTER);
-        this.add(lblTitle, imgQR, playersContainer);
+        this.add(lblTitle, imgQR, lblInstructions, playersContainer);
     }
 
     @Override

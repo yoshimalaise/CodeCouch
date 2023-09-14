@@ -16,6 +16,8 @@ public class TutorialView extends BaseView {
         Span lblTitle = new Span(tut.gameName);
         Image img = new Image();
         img.setSrc(tut.visual);
+        img.setWidth("60%");
+        img.getStyle().set("border-radius", "8px");
         Span lblDescription = new Span(tut.GameDescription);
         add(lblTitle, img, lblDescription);
     }

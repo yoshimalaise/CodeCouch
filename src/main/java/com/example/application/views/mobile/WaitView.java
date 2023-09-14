@@ -14,7 +14,7 @@ public class WaitView extends BaseView {
 
     public WaitView(Player p) {
         Span lblPlayerName = new Span(p.getName() + " - " + p.getScore());
-        Span lblPleaseWait = new Span("Waiting for all players to get ready.");
+        Span lblPleaseWait = new Span("Wait until all players are ready, then press continue to start the game.");
         Button btnContinue = new Button("Continue");
         btnContinue.addClickListener(b -> Game.handleCommand(new ContinueCommand()));
         this.add(lblPlayerName, lblPleaseWait, btnContinue);

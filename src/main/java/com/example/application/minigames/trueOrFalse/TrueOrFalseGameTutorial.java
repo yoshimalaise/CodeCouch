@@ -8,6 +8,6 @@ public class TrueOrFalseGameTutorial extends GameTutorial {
         super(chapter + " - True or False?",
                 "In the following rounds you will be presented with a list of statements about the " +
                  chapter + " chapter. However one of the statements is not like the other, look at the question to see if you have to find the correct or the wrong statement!",
-                "");
+                "tutorials/true_false_tutorial.gif");
     }
 }

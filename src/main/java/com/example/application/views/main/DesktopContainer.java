@@ -12,10 +12,12 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.component.page.PendingJavaScriptResult;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.Route;
 
 @PageTitle("Main")
 @Route(value = "")
+@PreserveOnRefresh
 public class DesktopContainer extends HorizontalLayout {
 
     private BaseView currentView;
