@@ -6,8 +6,13 @@ import com.vaadin.flow.theme.Theme;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -24,6 +29,7 @@ public class Application implements AppShellConfigurator  {
     private static AtomicBoolean isRunning = new AtomicBoolean(false);
 
     public static void main(String[] args) {
+
         SpringApplicationBuilder builder = new SpringApplicationBuilder(Application.class);
         builder.headless(false);
         builder.run(args);
@@ -38,8 +44,17 @@ public class Application implements AppShellConfigurator  {
                     if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                         try {
                             Desktop.getDesktop().browse(new URI("http://localhost:8080"));
+                            // try to change the logo
+                            JFrame f = new JFrame();
+                            URL url = getClass().getClassLoader().getResource("CodeCouchLogo.png");
+                            f.setIconImage(Toolkit.getDefaultToolkit().getImage(url));
+                            f.setVisible(false);
+                            if (Taskbar.isTaskbarSupported()) {
+                                Taskbar.getTaskbar().setIconImage(ImageIO.read(new File(url.getFile())));
+                            }
+
                         } catch (Exception ex) {
-                            throw new RuntimeException(ex);
+                            System.out.println("Could not change taskbar logo");
                         }
                     }
                 }

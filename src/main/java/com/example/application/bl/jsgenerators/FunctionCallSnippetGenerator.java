@@ -1,0 +1,139 @@
+package com.example.application.bl.jsgenerators;
+
+import com.example.application.bl.utils.MyUtils;
+
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+public abstract class FunctionCallSnippetGenerator {
+    private static Random r;
+
+    private static ArrayList<String> declaredVars = new ArrayList<>();
+
+    private static final ArrayList<String> mathOperators = new ArrayList<>(){{
+        add("+");
+        add("-");
+        add("*");
+        add("%");
+    }};
+
+    private static final ArrayList<Supplier<String>> generators =  new ArrayList<>(){{
+        add(FunctionCallSnippetGenerator::generateDirectAssignment);
+        add(FunctionCallSnippetGenerator::generateIfBlock);
+        add(FunctionCallSnippetGenerator::generateSwapBlock);
+        add(FunctionCallSnippetGenerator::generateAdditionBlock);
+        add(FunctionCallSnippetGenerator::generateSubtractionBlock);
+        add(FunctionCallSnippetGenerator::generateConditionalReturn);
+        add(FunctionCallSnippetGenerator::generateConditionalReturn);
+        add(FunctionCallSnippetGenerator::generateConditionalReturn);
+    }};
+
+    private static final ArrayList<String> endSetVars = new ArrayList<>(){{
+        add("x");
+        add("y");
+        add("z");
+    }};
+
+    private static final ArrayList<String> comparators = new ArrayList<>(){{
+        add("<");
+        add("<=");
+        add("===");
+        add("!==");
+        add(">=");
+        add(">=");
+    }};
+
+    private static int varCtr = 1;
+
+
+    private static String generateReturnStatement() {
+        List<String> vars = new ArrayList<>(){{ add("x"); add("y"); add("z"); }};
+        Collections.shuffle(vars);
+        StringBuilder res = new StringBuilder("return ");
+        String v = vars.remove(0);
+        res.append(" ").append(v);
+        for (int i = 0; i < 2; i++) {
+            if (r.nextInt(1, 11) > 7) {
+                res.append(" ")
+                        .append(MyUtils.getRandomElFromList(mathOperators))
+                        .append(" ").append(vars.remove(0));
+            }
+        }
+        res.append(";\n");
+        return  res.toString();
+    }
+
+    private static String generateConditionalReturn() {
+        String v = MyUtils.getRandomElFromList(endSetVars);
+        return "if (" + v + " " + MyUtils.getRandomElFromList(comparators) + " " + r.nextInt(-50, 50) + "){\n" +
+                "    " + generateReturnStatement() +
+                "}\n";
+    }
+
+    public static String generateSnippet() {
+        String innerBody = FunctionCallSnippetGenerator.generateXYZSnippet();
+        return "function doMagic(x, y ,z) {\n" +
+                Arrays.stream(innerBody.split("\n")).map( l -> "    " + l).reduce("", (acc, l) -> acc + "    " + l + "\n") +
+                generateReturnStatement() +
+                "}";
+    }
+
+    /**
+     * In direct assignment we assign a var between -30 and 30 to one of the vars
+     * @return the snippet for the assignment
+     */
+    private static String generateDirectAssignment() {
+        return MyUtils.getRandomElFromList(endSetVars) + " = " + r.nextInt(-30, 31) + ";\n";
+    }
+
+    private static String generateSwapBlock() {
+        String newVar = getNextVar();
+        String el1 = MyUtils.getRandomElFromList(endSetVars);
+        String el2 = MyUtils.getRandomElFromList(endSetVars.stream().filter(el -> !el.equals(el1)).toList());
+        return  "let " + newVar+ " = " + el1 + ";\n" +
+                el1 + " = " + el2 + ";\n" +
+                el2 + " = " + newVar + ";\n";
+    }
+
+    private static String generateAdditionBlock() {
+        if (declaredVars.size() > 0 && r.nextInt(1, 3) == 1) {
+            Collections.shuffle(declaredVars);
+            return  MyUtils.getRandomElFromList(endSetVars) + " += " + declaredVars.get(0) + ";\n";
+        }
+        return  MyUtils.getRandomElFromList(endSetVars) + " += " + r.nextInt(-20, 20) + ";\n";
+    }
+
+    private static String generateSubtractionBlock() {
+        if (declaredVars.size() > 0 && r.nextInt(1, 3) == 1) {
+            Collections.shuffle(declaredVars);
+            return  MyUtils.getRandomElFromList(endSetVars) + " -= " + declaredVars.get(0) + ";\n";
+        }
+        return  MyUtils.getRandomElFromList(endSetVars) + " -= " + r.nextInt(-20, 20) + ";\n";
+    }
+
+    private static String generateIfBlock() {
+        String newVarName = getNextVar();
+        return ("let " + newVarName + " = " + r.nextInt(0, 21) + ";\n" +
+                "if (" + newVarName + " " + MyUtils.getRandomElFromList(comparators) + " " + r.nextInt(0, 21) + "){\n" +
+                "    " + generateDirectAssignment() +
+                "}\n");
+    }
+
+    private static String getNextVar() {
+        String nextVar = List.of("a", "b", "c", "d", "e", "f", "g", "h", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "foo", "bar", "buzz").get(varCtr++);
+        declaredVars.add(nextVar);
+        return nextVar;
+    }
+
+    private static String generateXYZSnippet() {
+        r = new Random();
+        declaredVars = new ArrayList<>();
+        StringBuilder res = new StringBuilder("");
+        int noOfBlocks = r.nextInt(2, 5);
+        for (int i = 0; i < noOfBlocks; i++) {
+            res.append(MyUtils.getRandomElFromList(generators).get());
+        }
+        return res.toString();
+    }
+}

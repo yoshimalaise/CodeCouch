@@ -6,6 +6,7 @@ import com.example.application.views.main.DesktopContainer;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.TextField;
 
@@ -15,6 +16,9 @@ public class HomeView extends BaseView {
 
     public HomeView(DesktopContainer c) {
         this.container = c;
+
+        Image imgLogo = new Image("icons/CodeCouchLogo.png", "The logo");
+        imgLogo.setWidth("256px");
 
         btnStart = new Button("Start Game");
         btnStart.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -27,6 +31,6 @@ public class HomeView extends BaseView {
         this.setAlignItems(Alignment.CENTER);
         this.setHorizontalComponentAlignment(Alignment.CENTER);
 
-        add(btnStart);
+        add(imgLogo, btnStart);
     }
 }

@@ -10,7 +10,5 @@ public interface BaseMiniGame {
 
     GameTutorial getTutorial();
 
-    BaseView getMobileView(Player p);
-
     BaseView getDesktopView();
 }

@@ -1,6 +1,7 @@
 package com.example.application.bl;
 
 import com.example.application.minigames.outputguesser.OutputGuesserGameFactory;
+import com.example.application.minigames.resultguesser.ResultGuesserGameFactory;
 import com.example.application.minigames.trueOrFalse.TrueOrFalseGameFactory;
 import com.example.application.minigames.trueOrFalse.chapter.ChapterOne;
 import com.example.application.minigames.trueOrFalse.chapter.ChapterTwo;
@@ -15,6 +16,7 @@ public abstract class MiniGameFactoryCollection {
     public static ArrayList<BaseGameFactory> getAllFactories() {
         return (new ArrayList<BaseGameFactory>() {{
                     add(new OutputGuesserGameFactory());
+                    add(new ResultGuesserGameFactory());
 
                     // add all the chapter true or false levels
                     add(new TrueOrFalseGameFactory<>(ChapterOne.NAME, ChapterOne::new));

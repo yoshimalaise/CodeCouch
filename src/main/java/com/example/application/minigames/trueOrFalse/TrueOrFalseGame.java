@@ -38,11 +38,6 @@ public class TrueOrFalseGame implements BaseMiniGame {
     }
 
     @Override
-    public BaseView getMobileView(Player p) {
-        return new WaitView(p);
-    }
-
-    @Override
     public BaseView getDesktopView() {
         if (this.view == null) {
             this.setupGame();

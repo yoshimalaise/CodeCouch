@@ -1,20 +1,18 @@
-package com.example.application.minigames.outputguesser;
+package com.example.application.minigames.resultguesser;
 
 import com.example.application.bl.commands.BaseCommand;
 import com.example.application.bl.commands.StringAnswerCommand;
 import com.example.application.minigames.BaseMiniGame;
+import com.example.application.minigames.outputguesser.OutputGuesserTutorial;
 import com.example.application.minigames.outputguesser.components.OutputGuesserMainView;
 import com.example.application.model.GameTutorial;
 import com.example.application.model.Player;
 import com.example.application.views.main.BaseView;
 import com.example.application.views.mobile.WaitView;
 
-public class OutputGuesserGame implements BaseMiniGame {
-    private OutputGuesserMainView view;
+public class ResultGuesserGame implements BaseMiniGame {
 
-    public OutputGuesserGame() {
-
-    }
+    private ResultGuesserGameView view;
 
     @Override
     public void handleCommand(BaseCommand command) {
@@ -28,10 +26,14 @@ public class OutputGuesserGame implements BaseMiniGame {
         return new OutputGuesserTutorial();
     }
 
+    public BaseView getMobileView(Player player) {
+        return new WaitView(player);
+    }
+
     @Override
     public BaseView getDesktopView() {
         if (this.view == null) {
-            this.view = new OutputGuesserMainView();
+            this.view = new ResultGuesserGameView();
         }
         return this.view;
     }
