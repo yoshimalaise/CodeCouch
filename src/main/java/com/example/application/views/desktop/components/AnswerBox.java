@@ -7,4 +7,8 @@ public class AnswerBox extends Span {
         super(text);
         addClassName("answer-box");
     }
+
+    public void markCorrect() {
+        this.addClassName("correct-answer");
+    }
 }

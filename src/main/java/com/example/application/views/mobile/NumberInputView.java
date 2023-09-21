@@ -23,5 +23,6 @@ public class NumberInputView extends BaseView {
             Game.handleCommand(new StringAnswerCommand(p, numberField.getValue() + ""));
         });
         add(btn);
+        numberField.focus();
     }
 }

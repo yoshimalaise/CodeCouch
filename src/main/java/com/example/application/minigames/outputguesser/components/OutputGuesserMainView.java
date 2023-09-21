@@ -35,6 +35,8 @@ public class OutputGuesserMainView extends BaseView {
 
     private List<StringAnswer> answers = new ArrayList<>();
 
+    private ArrayList<Button> buttons = new ArrayList<>();
+
     public OutputGuesserMainView() {
         roundCtr = 0;
         this.loadNextRound();
@@ -86,10 +88,12 @@ public class OutputGuesserMainView extends BaseView {
                     roundOverview.add(new Span("Round "  + roundCtr + "/" + maxRoundCounts));
 
                     HorizontalLayout answersContainer = new HorizontalLayout();
+                    buttons.clear();
                     for (String possibleAnswer : possibleAnswers) {
                         Button btn = new Button();
                         btn.setText(possibleAnswer);
                         answersContainer.add(btn);
+                        buttons.add(btn);
                     }
                     answersContainer.setSpacing(true);
                     answersContainer.setAlignItems(Alignment.STRETCH);
@@ -124,12 +128,23 @@ public class OutputGuesserMainView extends BaseView {
         });
 
         if (MyUtils.allPlayersAnswered()){
+            this.showSolution();
             try {
-                sleep(3000);
+                sleep(4000);
                 this.loadNextRound();
             } catch (InterruptedException e) {
                 this.loadNextRound();
             }
         }
+    }
+
+    private void showSolution() {
+        this.updateUIInLock(() -> {
+            for (Button button : buttons) {
+                if (button.getText().equals(solution)) {
+                    button.addClassName("correct-answer");
+                }
+            }
+        });
     }
 }

@@ -34,6 +34,8 @@ public class TrueOrFalseView extends BaseView {
 
     private List<StringAnswer> answers = new ArrayList<>();
 
+    private List<AnswerBox> answerBoxes = new ArrayList<>();
+
     public TrueOrFalseView(String chapter, List<TrueOrFalseRound> rounds) {
         this.chapter = chapter;
         this.rounds = rounds;
@@ -63,8 +65,11 @@ public class TrueOrFalseView extends BaseView {
             }
 
             VerticalLayout answersContainer = new VerticalLayout();
+            answerBoxes.clear();
             for (String possibleAnswer : rounds.get(roundCtr).options) {
-                answersContainer.add(new AnswerBox(possibleAnswer));
+                AnswerBox a = new AnswerBox(possibleAnswer);
+                answerBoxes.add(a);
+                answersContainer.add(a);
             }
             answersContainer.setSpacing(true);
             answersContainer.setAlignItems(Alignment.STRETCH);
@@ -99,11 +104,22 @@ public class TrueOrFalseView extends BaseView {
 
         if (MyUtils.allPlayersAnswered()){
             try {
-                sleep(3000);
+                this.showSolution();
+                sleep(4000);
                 this.loadNextRound();
             } catch (InterruptedException e) {
                 this.loadNextRound();
             }
         }
+    }
+
+    private void showSolution() {
+        this.updateUIInLock(() -> {
+            for (AnswerBox b : answerBoxes) {
+                if (b.getText().equals(rounds.get(roundCtr).correctAnswer)) {
+                    b.markCorrect();
+                }
+            }
+        });
     }
 }

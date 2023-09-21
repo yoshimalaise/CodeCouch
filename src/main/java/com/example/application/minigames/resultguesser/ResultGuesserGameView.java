@@ -116,11 +116,12 @@ public class ResultGuesserGameView extends BaseView {
 
         if (MyUtils.allPlayersAnswered()){
             try {
-                sleep(3000);
+                sleep(4000);
                 this.loadNextRound();
             } catch (InterruptedException e) {
                 this.loadNextRound();
             }
         }
     }
+
 }
