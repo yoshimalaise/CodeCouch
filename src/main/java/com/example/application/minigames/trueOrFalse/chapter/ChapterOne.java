@@ -55,7 +55,7 @@ public class ChapterOne extends BaseChapter {
             add("Web 2.0 is characterised by new technologies such as websockets and server push that allow real-time collaboration.");
             add("Web 3.0 is characterised by new technologies such as websockets and server push that allow real-time collaboration.");
             add("Web 3.0 is characterised by users becoming authors that are creating information.");
-            add("In the paper \"As We MAy Think\" Vannevar Bush explains how Web 3.0 semantics can be used to power automatic reasoners for AI applications");
+            add("In the paper \"As We May Think\" Vannevar Bush explains how Web 3.0 semantics can be used to power automatic reasoners for AI applications");
             add("UDP lives in the Application layer of TCP/IP");
             add("FTP is part of the Internet layer of TCP/IP");
             add("TCP is an unordered transmission protocol for a byte stream between two endpoints.");
