@@ -10,8 +10,6 @@ public class ChapterFive extends BaseChapter{
         super(NAME);
     }
 
-    // TODO: continue after slide 16
-
     @Override
     public List<String> getTrueStatements() {
         return new ArrayList<>(){{
@@ -39,6 +37,22 @@ public class ChapterFive extends BaseChapter{
             add("In the box model the margin is the transparent area outside the border.");
             add("In the box model the padding is the transparent area around the content.");
             add("In the box model the border goes around the padding.");
+            add("In the box model by default the width of the box only defines the width of the content, padding and border are added to that width.");
+            add("The box-sizing property can be used to override whether or not the padding and border are included in the box width.");
+            add("The display property can be used to change the behavior of an element from inline boxes to block-level boxes");
+            add("inline boxes flow between surrounding text");
+            add("block-level boxes start on a new line");
+            add("On high resolution screens browsers typically use more than one device pixel for each 'px' unit in css.");
+            add("In CSS the em unit is relative to the font size of the element.");
+            add("In CSS the rem unit is relative to the font size of the root element.");
+            add("Block-level elements with the 'static' value for their position property start on a new line");
+            add("The 'relative' position allows us to move the element in relation to where it would have been shown.");
+            add("The 'absolute' position takes the box out of the normal flow and positions it relative to parent element.");
+            add("The 'fixed' position allows us to position an element relative to the browser window so scrolling no longer changes the position.");
+            add("The flex-flow property is a shorthand to set both the flex-direction and the flex-wrap");
+            add("The flex-wrap property can be used to specify what should happen if items are to overflow the flex-container");
+            add("In order to create responsive webpages one can use media queries to apply different declaration blocks based on device properties (e.g. viewport width).");
+            add("Media queries can be used to apply a different layout based on the aspect ratio of the device.");
         }};
     }
 
@@ -61,6 +75,18 @@ public class ChapterFive extends BaseChapter{
             add("In the box model the padding is the transparent area outside the border.");
             add("In the box model the margin is the transparent area around the content.");
             add("In the box model the border goes around the margin.");
+            add("In the box model by default the width of the box includes the content, the border and the padding.");
+            add("The box-sizing property can be used to set a default padding and border to all elements in the HTML document.");
+            add("block-level boxes flow between surrounding text.");
+            add("The use of 'px' units in css is encourages as it guarantees a consistent size across all devices.");
+            add("In CSS the rem unit is relative to the font size of the element.");
+            add("In CSS the em unit is relative to the font size of the root element.");
+            add("Block-level elements with the 'relative' value for their position property start on a new line");
+            add("The 'fixed' position allows us to move the element in relation to where it would have been shown.");
+            add("The 'relative' position takes the box out of the normal flow and positions it relative to parent element.");
+            add("The 'absolute' position allows us to position an element relative to the browser window so scrolling no longer changes the position.");
+            add("In order to change the layout of elements when the user resizes the browser window one must make use of JavaScript 'resized' event handlers.");
+            add("In order to load different resolution versions of pictures depending on device resolution one has to use JavaScript to modify the DOM.");
         }};
     }
 }
