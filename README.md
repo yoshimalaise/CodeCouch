@@ -22,6 +22,10 @@ ready to be deployed. The file can be found in the `target` folder after the bui
 Once the JAR file is built, you can run it using
 `java -jar target/mytodo-1.0-SNAPSHOT.jar`
 
+
+You can package the jar by running the following command (see https://github.com/dante-biase/jar2app)
+`jar2app CodeCouch.jar -i CodeCouchLogo.icns -n CodeCouch`
+
 ## Project structure
 
 - `MainLayout.java` in `src/main/java` contains the navigation setup (i.e., the

@@ -26,6 +26,11 @@ public class ChapterSeven extends BaseChapter {
             add("Every valid and well-formed XHTML document is a valid and well-formed XML document.");
             add("In a XHTML document the <title> element must be the first element in the <head>.");
             add("XML Schema introduces datatypes and inheritance which does not exist in Document Type Definition (DTD)");
+            add("XPath can be used to address XML documents.");
+            add("SAX is an event based programming API for reading XML documents");
+            add("The DOM parser must read and parse the entire document before it can be manipulated.");
+            add("XML Transformations can be used to create websites by converting XML to XHTML.");
+            add("XML-RPC is a technology that makes remote procedure calls possible between systems written in different programming languages.");
         }};
     }
 
@@ -40,6 +45,11 @@ public class ChapterSeven extends BaseChapter {
             add("The matching of XML tags is case insensitive.");
             add("Every valid and well-formed XML document is a valid and well-formed XHTML document.");
             add("In an XHTML document the <head> and <body> elements can be omitted.");
+            add("The DOM is an event based programming API for reading XML documents");
+            add("The Document Object Model only exists for HTML");
+            add("The DOM parser is suited for large applications because of its low memory usage");
+            add("A DOM Parser needs less memory than SAX parser");
+            add("XML-RPC is often faster than specialised protocols that are used in closed networks.");
         }};
     }
 }
