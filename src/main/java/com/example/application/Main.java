@@ -3,14 +3,15 @@ package com.example.application;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.theme.Theme;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.stage.Stage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -25,18 +26,23 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @SpringBootApplication
 @Push
 @Theme(value = "mytodo")
-public class Application implements AppShellConfigurator  {
+public class Main implements AppShellConfigurator  {
     private static AtomicBoolean isRunning = new AtomicBoolean(false);
 
-    public static void main(String[] args) {
 
-        SpringApplicationBuilder builder = new SpringApplicationBuilder(Application.class);
+    public static void main(String[] args) {
+        /**
+        SpringApplicationBuilder builder = new SpringApplicationBuilder(Main.class);
         builder.headless(false);
         builder.run(args);
+        */
+
+        Application.launch(DesktopWindow.class, args);
 
         /**
          * Open the browser window and navigate to the game
          */
+        /*
         if (!isRunning.getAndSet(true)) {
             Thread thread = new Thread(new Runnable() {
                 @Override
@@ -61,6 +67,6 @@ public class Application implements AppShellConfigurator  {
             });
             thread.start();
         }
+        */
     }
-
 }
