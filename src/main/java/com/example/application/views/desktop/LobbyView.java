@@ -37,7 +37,8 @@ public class LobbyView extends BaseView {
 
     private HorizontalLayout playersContainer;
 
-    public LobbyView() {
+    public LobbyView(Game g) {
+        super(g);
         Text lblTitle = new Text("CodeCouch Lobby");
         Image imgQR = new Image();
         playersContainer = new HorizontalLayout();
@@ -50,7 +51,7 @@ public class LobbyView extends BaseView {
         BitMatrix bitMatrix = null;
         try {
             String publicIp = this.getPublicIPv4();
-            bitMatrix = barcodeWriter.encode("http://" + publicIp + ":8080/mobile", BarcodeFormat.QR_CODE, 400, 400);
+            bitMatrix = barcodeWriter.encode("http://" + publicIp + ":8080/mobile/"+ g.gameId, BarcodeFormat.QR_CODE, 400, 400);
             BufferedImage bimg = MatrixToImageWriter.toBufferedImage(bitMatrix);
             String b64Data = this.encodeToString(bimg, "png");
             imgQR.setSrc(b64Data);
@@ -70,7 +71,7 @@ public class LobbyView extends BaseView {
         if (playersContainer.getUI().isPresent()) {
             playersContainer.getUI().get().access(() -> {
                 playersContainer.removeAll();
-                Game.getPlayers().stream().forEach(p -> playersContainer.add(new PlayerAvatarComponent(p)));
+                game.getPlayers().stream().forEach(p -> playersContainer.add(new PlayerAvatarComponent(p)));
             });
         }
     }

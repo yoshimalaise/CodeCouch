@@ -5,13 +5,15 @@ import com.example.application.model.Player;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 public class PlayersOverview extends HorizontalLayout {
-    public PlayersOverview() {
+    Game game;
+    public PlayersOverview(Game game) {
+        this.game = game;
         this.update();
     }
 
     public void update() {
         this.removeAll();
-        for (Player player : Game.getPlayers()) {
+        for (Player player : game.getPlayers()) {
             this.add(new PlayerAvatarComponent(player));
         }
     }

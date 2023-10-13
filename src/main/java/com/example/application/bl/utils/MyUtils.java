@@ -14,13 +14,4 @@ public abstract class MyUtils {
         return els.get(random.nextInt(els.size()));
     }
 
-    public static boolean allPlayersAnswered() {
-        for (Player player : Game.getPlayers()) {
-            if (!player.hasAnswered) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 }

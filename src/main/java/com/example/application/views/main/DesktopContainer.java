@@ -1,5 +1,6 @@
 package com.example.application.views.main;
 
+import com.example.application.bl.Game;
 import com.example.application.model.jsTypes.JSResultCallback;
 import com.example.application.views.desktop.DesktopView;
 import com.example.application.views.desktop.HomeView;
@@ -22,6 +23,8 @@ public class DesktopContainer extends HorizontalLayout {
 
     private BaseView currentView;
 
+    public Game game;
+
     public DesktopContainer() {
         this.switchToView(DesktopView.HOME_VIEW);
     }
@@ -32,7 +35,7 @@ public class DesktopContainer extends HorizontalLayout {
                 this.currentView = new HomeView(this);
                 break;
             case LOBBY:
-                this.currentView = new LobbyView();
+                this.currentView = new LobbyView(game);
                 break;
         }
 
@@ -67,7 +70,7 @@ public class DesktopContainer extends HorizontalLayout {
         }
     }
 
-    public static <T> void executeJavaScript(String script, Class<T> type, JSResultCallback<T> callback) {
+    public <T> void executeJavaScript(String script, Class<T> type, JSResultCallback<T> callback) {
         Page page = UI.getCurrent().getPage();
         PendingJavaScriptResult result = page.executeJs(script);
         result.then(res -> {

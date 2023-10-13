@@ -12,18 +12,18 @@ import java.util.stream.Collectors;
 
 public abstract class MiniGameFactoryCollection {
 
-    public static ArrayList<BaseGameFactory> getAllFactories() {
+    public static ArrayList<BaseGameFactory> getAllFactories(Game game) {
         return (new ArrayList<BaseGameFactory>() {{
-                    add(new OutputGuesserGameFactory());
-                    add(new ResultGuesserGameFactory());
+                    add(new OutputGuesserGameFactory(game));
+                    add(new ResultGuesserGameFactory(game));
 
                     // add all the chapter true or false levels
-                    add(new TrueOrFalseGameFactory<>(ChapterOne.NAME, ChapterOne::new));
-                    add(new TrueOrFalseGameFactory<>(ChapterTwo.NAME, ChapterTwo::new));
-                    add(new TrueOrFalseGameFactory<>(ChapterThree.NAME, ChapterThree::new));
-                    add(new TrueOrFalseGameFactory<>(ChapterFour.NAME, ChapterFour::new));
-                    add(new TrueOrFalseGameFactory<>(ChapterFive.NAME, ChapterFive::new));
-                    add(new TrueOrFalseGameFactory<>(ChapterSix.NAME, ChapterSix::new));
+                    add(new TrueOrFalseGameFactory<>(ChapterOne.NAME, ChapterOne::new, game));
+                    add(new TrueOrFalseGameFactory<>(ChapterTwo.NAME, ChapterTwo::new, game));
+                    add(new TrueOrFalseGameFactory<>(ChapterThree.NAME, ChapterThree::new, game));
+                    add(new TrueOrFalseGameFactory<>(ChapterFour.NAME, ChapterFour::new, game));
+                    add(new TrueOrFalseGameFactory<>(ChapterFive.NAME, ChapterFive::new, game));
+                    add(new TrueOrFalseGameFactory<>(ChapterSix.NAME, ChapterSix::new, game));
                 }}).stream()
                 .sorted(Comparator.comparing(f -> f.name))
                 .collect(Collectors.toCollection(ArrayList::new));

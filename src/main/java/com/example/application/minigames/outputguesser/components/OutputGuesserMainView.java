@@ -1,6 +1,7 @@
 package com.example.application.minigames.outputguesser.components;
 
 import com.example.application.bl.Game;
+import com.example.application.bl.Server;
 import com.example.application.bl.jsgenerators.XYZSnippetGenerator;
 import com.example.application.bl.utils.MyUtils;
 import com.example.application.minigames.outputguesser.ProblemType;
@@ -37,7 +38,8 @@ public class OutputGuesserMainView extends BaseView {
 
     private ArrayList<Button> buttons = new ArrayList<>();
 
-    public OutputGuesserMainView() {
+    public OutputGuesserMainView(Game g) {
+        super(g);
         roundCtr = 0;
         this.loadNextRound();
     }
@@ -46,10 +48,10 @@ public class OutputGuesserMainView extends BaseView {
         // load all vars for the new round
         this.roundCtr++;
         if (this.roundCtr > this.maxRoundCounts) {
-            Game.loadNextMiniGame();
+            game.loadNextMiniGame();
             return;
         }
-        Game.clearPlayersRoundInfo();
+        game.clearPlayersRoundInfo();
         this.answers = new ArrayList<>();
         List<ProblemType> types = new ArrayList<ProblemType>() {{
           add(ProblemType.X_PROBLEM);
@@ -59,7 +61,7 @@ public class OutputGuesserMainView extends BaseView {
         Collections.shuffle(types);
         this.problemType = types.get(0);
         this.codeSnippet = XYZSnippetGenerator.generateXYZSnippet();
-        DesktopContainer.executeJavaScript(this.codeSnippet + XYZResult.getExtractionString(), XYZResult.class, (res) -> {
+        game.getContainer().executeJavaScript(this.codeSnippet + XYZResult.getExtractionString(), XYZResult.class, (res) -> {
                 // generate results for the generated code
                 String q = "What is the value of " + problemType
                         +  " after executing the following program?";
@@ -99,22 +101,23 @@ public class OutputGuesserMainView extends BaseView {
                     answersContainer.setAlignItems(Alignment.STRETCH);
                     answersContainer.setVerticalComponentAlignment(Alignment.CENTER);
 
-                    this.playersOverview = new PlayersOverview();
+                    this.playersOverview = new PlayersOverview(game);
                     this.add(roundOverview, new H1(q), new CodeSnippet(codeSnippet), answersContainer, playersOverview);
                 });
 
-                MobileContainer.switchAllMobileClientsToView(p -> new PickOneOptionView(possibleAnswers, p));
+
+                game.switchAllMobileClientsToView(p -> new PickOneOptionView(possibleAnswers, p));
             });
     }
 
     public void handleAnswer(Player player, String answer) {
         this.answers.add(new StringAnswer(player, answer));
-        if (MyUtils.allPlayersAnswered()){
+        if (game.allPlayersAnswered()){
             // calculate all the scores for this round
             int rightAnswersCnt = 0;
             for (StringAnswer a : answers) {
                 if (a.answer.equals(solution)) {
-                    int score = Game.getPlayers().size() - rightAnswersCnt;
+                    int score = game.getPlayers().size() - rightAnswersCnt;
                     rightAnswersCnt++;
                     a.player.increaseScore(score);
                 } else {
@@ -122,12 +125,12 @@ public class OutputGuesserMainView extends BaseView {
                 }
             }
         }
-        Game.getPlayers().sort((p1, p2) -> p2.getScore() - p1.getScore());
+        game.getPlayers().sort((p1, p2) -> p2.getScore() - p1.getScore());
         this.updateUIInLock(() -> {
             playersOverview.update();
         });
 
-        if (MyUtils.allPlayersAnswered()){
+        if (game.allPlayersAnswered()){
             this.showSolution();
             try {
                 sleep(4000);

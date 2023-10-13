@@ -36,7 +36,8 @@ public class TrueOrFalseView extends BaseView {
 
     private List<AnswerBox> answerBoxes = new ArrayList<>();
 
-    public TrueOrFalseView(String chapter, List<TrueOrFalseRound> rounds) {
+    public TrueOrFalseView(String chapter, List<TrueOrFalseRound> rounds, Game game) {
+        super(game);
         this.chapter = chapter;
         this.rounds = rounds;
         roundCtr = -1;
@@ -46,10 +47,10 @@ public class TrueOrFalseView extends BaseView {
     private void loadNextRound() {
         this.roundCtr++;
         if (this.roundCtr == this.rounds.size()) {
-            Game.loadNextMiniGame();
+            game.loadNextMiniGame();
             return;
         }
-        Game.clearPlayersRoundInfo();
+        game.clearPlayersRoundInfo();
         this.answers = new ArrayList<>();
 
         this.updateUIInLock(() -> {
@@ -75,21 +76,21 @@ public class TrueOrFalseView extends BaseView {
             answersContainer.setAlignItems(Alignment.STRETCH);
             answersContainer.setHorizontalComponentAlignment(Alignment.CENTER);
 
-            this.playersOverview = new PlayersOverview();
+            this.playersOverview = new PlayersOverview(game);
             add(roundOverview, question, answersContainer, playersOverview);
         });
 
-        MobileContainer.switchAllMobileClientsToView(p -> new PickOneOptionView(rounds.get(roundCtr).options , p));
+        game.switchAllMobileClientsToView(p -> new PickOneOptionView(rounds.get(roundCtr).options , p));
     }
 
     public void handleAnswer(Player player, String answer) {
         this.answers.add(new StringAnswer(player, answer));
-        if (MyUtils.allPlayersAnswered()){
+        if (game.allPlayersAnswered()){
             // calculate all the scores for this round
             int rightAnswersCnt = 0;
             for (StringAnswer a : answers) {
                 if (a.answer.equals(rounds.get(roundCtr).correctAnswer)) {
-                    int score = Game.getPlayers().size() - rightAnswersCnt;
+                    int score = game.getPlayers().size() - rightAnswersCnt;
                     rightAnswersCnt++;
                     a.player.increaseScore(score);
                 } else {
@@ -97,12 +98,12 @@ public class TrueOrFalseView extends BaseView {
                 }
             }
         }
-        Game.getPlayers().sort((p1, p2) -> p2.getScore() - p1.getScore());
+        game.getPlayers().sort((p1, p2) -> p2.getScore() - p1.getScore());
         this.updateUIInLock(() -> {
             playersOverview.update();
         });
 
-        if (MyUtils.allPlayersAnswered()){
+        if (game.allPlayersAnswered()){
             try {
                 this.showSolution();
                 sleep(4000);

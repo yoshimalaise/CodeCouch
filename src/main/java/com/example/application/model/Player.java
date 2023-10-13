@@ -7,14 +7,17 @@ public class Player {
     private int score;
     private MobileContainer client;
 
+    public String gameId;
+
     public boolean hasAnswered;
     public String roundMessage;
 
-    public Player(String name, MobileContainer client) {
+    public Player(String name, MobileContainer client, String gameId) {
         this.name = name;
         this.client = client;
         this.score = 0;
         this.hasAnswered = false;
+        this.gameId = gameId;
     }
 
     public MobileContainer getClient() {

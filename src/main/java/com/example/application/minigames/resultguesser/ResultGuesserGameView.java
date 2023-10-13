@@ -46,7 +46,8 @@ public class ResultGuesserGameView extends BaseView {
 
     private List<StringAnswer> answers = new ArrayList<>();
 
-    public ResultGuesserGameView() {
+    public ResultGuesserGameView(Game game) {
+        super(game);
         roundCtr = 0;
         this.loadNextRound();
     }
@@ -55,17 +56,17 @@ public class ResultGuesserGameView extends BaseView {
         // load all vars for the new round
         this.roundCtr++;
         if (this.roundCtr > this.maxRoundCounts) {
-            Game.loadNextMiniGame();
+            game.loadNextMiniGame();
             return;
         }
-        Game.clearPlayersRoundInfo();
+        game.clearPlayersRoundInfo();
         this.answers = new ArrayList<>();
 
         x = r.nextInt(-50,50);
         y = r.nextInt(-50,50);
         z = r.nextInt(-50,50);
         this.codeSnippet = FunctionCallSnippetGenerator.generateSnippet();
-        DesktopContainer.executeJavaScript(this.codeSnippet + JSFunctionCallResult.getExtractionString(x,y,z), JSFunctionCallResult.class, (res) -> {
+        game.getContainer().executeJavaScript(this.codeSnippet + JSFunctionCallResult.getExtractionString(x,y,z), JSFunctionCallResult.class, (res) -> {
             // generate results for the generated code
             String q = "What would be the result of the function call if we pass the following arguments?";
             solution = "" + res.getRes();
@@ -86,22 +87,22 @@ public class ResultGuesserGameView extends BaseView {
                 argsBoxContainer.setAlignItems(Alignment.STRETCH);
                 argsBoxContainer.setVerticalComponentAlignment(Alignment.CENTER);
 
-                this.playersOverview = new PlayersOverview();
+                this.playersOverview = new PlayersOverview(game);
 
                 this.add(roundOverview, new H1(q), argsBoxContainer, new CodeSnippet(codeSnippet), playersOverview);
             });
 
-            MobileContainer.switchAllMobileClientsToView(NumberInputView::new);
+            game.switchAllMobileClientsToView(NumberInputView::new);
         });
     }
     public void handleAnswer(Player player, String answer) {
         this.answers.add(new StringAnswer(player, answer));
-        if (MyUtils.allPlayersAnswered()){
+        if (game.allPlayersAnswered()){
             // calculate all the scores for this round
             int rightAnswersCnt = 0;
             for (StringAnswer a : answers) {
                 if (a.answer.equals(solution)) {
-                    int score = Game.getPlayers().size() - rightAnswersCnt;
+                    int score = game.getPlayers().size() - rightAnswersCnt;
                     rightAnswersCnt++;
                     a.player.increaseScore(score);
                 } else {
@@ -109,12 +110,12 @@ public class ResultGuesserGameView extends BaseView {
                 }
             }
         }
-        Game.getPlayers().sort((p1, p2) -> p2.getScore() - p1.getScore());
+        game.getPlayers().sort((p1, p2) -> p2.getScore() - p1.getScore());
         this.updateUIInLock(() -> {
             playersOverview.update();
         });
 
-        if (MyUtils.allPlayersAnswered()){
+        if (game.allPlayersAnswered()){
             try {
                 sleep(4000);
                 this.loadNextRound();
