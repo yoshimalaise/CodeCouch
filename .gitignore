@@ -20,3 +20,6 @@ drivers/
 error-screenshots/
 webpack.generated.js
 /jcef-bundle/
+/packager/CodeCouch.jar
+/packager/CodeCouch-Mac-arm/
+/packager/CodeCouch-Mac/

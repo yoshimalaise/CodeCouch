@@ -23,8 +23,12 @@ Once the JAR file is built, you can run it using
 `java -jar target/mytodo-1.0-SNAPSHOT.jar`
 
 
-You can package the jar by running the following command (see https://github.com/dante-biase/jar2app)
+You can package the jar as a mac app by running the following command (see https://github.com/dante-biase/jar2app)
 `jar2app CodeCouch.jar -i CodeCouchLogo.icns -n CodeCouch`
+
+For cross platform packaging see: https://github.com/libgdx/packr/
+The jar is placed in the packager subdirectory, from that directory use the following command
+`java -jar packr.jar mac-arm-packr-config.json`
 
 ## Project structure
 

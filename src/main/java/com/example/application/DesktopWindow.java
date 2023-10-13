@@ -3,6 +3,7 @@ package com.example.application;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
@@ -33,6 +34,7 @@ public class DesktopWindow extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle("CodeCouch - Web Technologies Edition");
+        this.setIcon(stage);
         stage.setResizable(true);
         stage.setMinWidth(MIN_WIDTH);
         stage.setWidth(MIN_WIDTH);
@@ -55,7 +57,6 @@ public class DesktopWindow extends Application {
                 }
             })).start();
 
-
             stage.show();
             stage.setFullScreen(true);
         } catch (Exception e) {
@@ -70,6 +71,14 @@ public class DesktopWindow extends Application {
     public void stop() {
         this.applicationContext.close();
         Platform.exit();
+    }
+
+    private void setIcon(Stage stage) {
+        try {
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("CodeCouchLogo.png")));
+        } catch (Exception ex) {
+            /// :)
+        }
     }
 
     private void openLocalBrowser() {
