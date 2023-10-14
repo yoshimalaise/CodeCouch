@@ -50,8 +50,8 @@ public class LobbyView extends BaseView {
         QRCodeWriter barcodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = null;
         try {
-            String publicIp = this.getPublicIPv4();
-            bitMatrix = barcodeWriter.encode("http://" + publicIp + ":8080/mobile/"+ g.gameId, BarcodeFormat.QR_CODE, 400, 400);
+            String url = System.getenv("HOST_URL") == null ? ("http://" + this.getPublicIPv4() + ":8080") : System.getenv("HOST_URL");
+            bitMatrix = barcodeWriter.encode( url + "/mobile/"+ g.gameId, BarcodeFormat.QR_CODE, 400, 400);
             BufferedImage bimg = MatrixToImageWriter.toBufferedImage(bitMatrix);
             String b64Data = this.encodeToString(bimg, "png");
             imgQR.setSrc(b64Data);
