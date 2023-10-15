@@ -2,9 +2,8 @@
 FROM maven:3.8.1-openjdk-11-slim AS builder
 WORKDIR /app
 COPY pom.xml .
-COPY src ./src
 RUN mvn -e -B dependency:resolve
-RUN mvn install -U
+COPY src ./src
 RUN mvn clean package -Pproduction
 
 
