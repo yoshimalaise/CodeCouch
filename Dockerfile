@@ -30,7 +30,7 @@ RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
 ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 RUN node --version
 RUN npm --version
-RUN apt-get install libxrender1:i386 libxtst6:i386 libxi6:i386
+RUN sudo apt-get install libxrender1 libxtst6 libxi6
 WORKDIR /app
 COPY --from=builder /app/target/CodeCouch.jar .
 CMD ["java", "-jar", "./CodeCouch.jar"]
