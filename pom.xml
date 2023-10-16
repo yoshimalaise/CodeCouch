@@ -96,6 +96,7 @@
         </dependency>
 
         <!-- JavaFX dependencies for every platform -->
+        <!--
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -132,6 +133,7 @@
             <version>21</version>
             <classifier>mac</classifier>
         </dependency>
+        -->
     </dependencies>
 
     <build>
