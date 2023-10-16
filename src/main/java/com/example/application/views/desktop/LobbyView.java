@@ -47,9 +47,9 @@ public class LobbyView extends BaseView {
         playersContainer.setMargin(true);
         playersContainer.setSpacing(true);
         playersContainer.setVerticalComponentAlignment(Alignment.CENTER);
-        QRCodeWriter barcodeWriter = new QRCodeWriter();
-        BitMatrix bitMatrix = null;
         try {
+            BitMatrix bitMatrix = null;
+            QRCodeWriter barcodeWriter = new QRCodeWriter();
             String url = System.getenv("HOST_URL") == null ? ("http://" + this.getPublicIPv4() + ":8080") : System.getenv("HOST_URL");
             bitMatrix = barcodeWriter.encode( url + "/mobile/"+ g.gameId, BarcodeFormat.QR_CODE, 400, 400);
             BufferedImage bimg = MatrixToImageWriter.toBufferedImage(bitMatrix);
