@@ -4,6 +4,7 @@ WORKDIR /app
 COPY pom.xml .
 RUN mvn -e -B dependency:resolve
 COPY src ./src
+COPY frontend ./frontend
 RUN mvn clean package -Pproduction
 
 
