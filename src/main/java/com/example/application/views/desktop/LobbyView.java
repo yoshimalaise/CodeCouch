@@ -55,7 +55,7 @@ public class LobbyView extends BaseView {
             BufferedImage bimg = MatrixToImageWriter.toBufferedImage(bitMatrix);
             String b64Data = this.encodeToString(bimg, "png");
             imgQR.setSrc(b64Data);
-        } catch (WriterException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
