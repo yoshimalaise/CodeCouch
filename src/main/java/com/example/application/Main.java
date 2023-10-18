@@ -32,6 +32,7 @@ public class Main implements AppShellConfigurator  {
         builder.headless(false);
         builder.run(args);
 
+        /** this code is irrelevant in the new hosted online edition
         if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
             try {
                 Desktop.getDesktop().browse(new URI("http://localhost:8080"));
@@ -44,5 +45,6 @@ public class Main implements AppShellConfigurator  {
                 // :)
             }
         }
+         */
     }
 }
