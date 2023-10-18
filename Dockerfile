@@ -31,7 +31,7 @@ ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 RUN node --version
 RUN npm --version
 RUN apt-get update
-RUN apt-get --assume-yes install libxext6
+RUN apt-get --assume-yes install default-jre
 WORKDIR /app
 COPY --from=builder /app/target/CodeCouch.jar .
 CMD ["java", "-jar", "./CodeCouch.jar"]
