@@ -37,7 +37,8 @@ public class LobbyView extends BaseView {
 
     private HorizontalLayout playersContainer;
 
-    public LobbyView() {
+    public LobbyView(Game g) {
+        super(g);
         Text lblTitle = new Text("CodeCouch Lobby");
         Image imgQR = new Image();
         playersContainer = new HorizontalLayout();
@@ -46,19 +47,21 @@ public class LobbyView extends BaseView {
         playersContainer.setMargin(true);
         playersContainer.setSpacing(true);
         playersContainer.setVerticalComponentAlignment(Alignment.CENTER);
-        QRCodeWriter barcodeWriter = new QRCodeWriter();
-        BitMatrix bitMatrix = null;
+        String joinUrl = "";
         try {
-            String publicIp = this.getPublicIPv4();
-            bitMatrix = barcodeWriter.encode("http://" + publicIp + ":8080/mobile", BarcodeFormat.QR_CODE, 400, 400);
+            BitMatrix bitMatrix = null;
+            QRCodeWriter barcodeWriter = new QRCodeWriter();
+            String url = System.getenv("HOST_URL") == null ? ("http://" + this.getPublicIPv4() + ":8080") : System.getenv("HOST_URL");
+            joinUrl = url + "/mobile/"+ g.gameId;
+            bitMatrix = barcodeWriter.encode( url + "/mobile/"+ g.gameId, BarcodeFormat.QR_CODE, 400, 400);
             BufferedImage bimg = MatrixToImageWriter.toBufferedImage(bitMatrix);
             String b64Data = this.encodeToString(bimg, "png");
             imgQR.setSrc(b64Data);
-        } catch (WriterException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        Span lblInstructions = new Span("Scan the QR code with your phone to join the game.");
+        Span lblInstructions = new Span("Scan the QR code with your phone or navigate to " + joinUrl + " to join the game.");
 
         this.setAlignItems(Alignment.CENTER);
         this.setHorizontalComponentAlignment(Alignment.CENTER);
@@ -70,7 +73,7 @@ public class LobbyView extends BaseView {
         if (playersContainer.getUI().isPresent()) {
             playersContainer.getUI().get().access(() -> {
                 playersContainer.removeAll();
-                Game.getPlayers().stream().forEach(p -> playersContainer.add(new PlayerAvatarComponent(p)));
+                game.getPlayers().stream().forEach(p -> playersContainer.add(new PlayerAvatarComponent(p)));
             });
         }
     }

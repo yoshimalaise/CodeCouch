@@ -11,6 +11,7 @@ import com.example.application.model.BaseGameFactory;
 import com.example.application.model.Player;
 import com.example.application.views.desktop.DesktopView;
 import com.example.application.views.desktop.TutorialView;
+import com.example.application.views.main.BaseView;
 import com.example.application.views.main.DesktopContainer;
 import com.example.application.views.main.MobileContainer;
 import com.example.application.views.mobile.MobileView;
@@ -19,76 +20,100 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
-public abstract class Game {
+public class Game {
+    public String gameId;
 
-    private static BaseMiniGame currentMiniGame;
+    private BaseMiniGame currentMiniGame;
 
-    private static GameState state;
+    private GameState state;
 
-    private static int currentGameCtr = 0;
-    public final static ArrayList<BaseGameFactory> generators = MiniGameFactoryCollection.getAllFactories();
+    private int currentGameCtr = 0;
+    public final ArrayList<BaseGameFactory> generators;
 
-    private static List<BaseGameFactory> selectedGenerators;
+    private List<BaseGameFactory> selectedGenerators;
 
-    private static List<Player> players = new ArrayList<>();
-    private static DesktopContainer desktopContainer;
+    private List<Player> players;
+    private DesktopContainer desktopContainer;
 
-    public static void newGame(DesktopContainer c) {
-        Game.currentGameCtr = -1;
-        Game.state = GameState.NEW;
-        Game.players = new ArrayList<>();
-        Game.desktopContainer = c;
-        Game.desktopContainer.switchToView(DesktopView.LOBBY);
-        Game.desktopContainer.update();
+    public Game(DesktopContainer c, String gameId) {
+        this.gameId = gameId;
+        this.currentGameCtr = -1;
+        this.state = GameState.NEW;
+        this.players = new ArrayList<>();
+        this.generators = MiniGameFactoryCollection.getAllFactories(this);
+        this.desktopContainer = c;
+        this.desktopContainer.game = this;
+        this.desktopContainer.switchToView(DesktopView.LOBBY);
+        this.desktopContainer.update();
+        c.game = this;
     }
 
-    public static Player addPlayer(String username, MobileContainer client) {
-        Player p = new Player(username, client);
-        Game.players.add(p);
-        Game.desktopContainer.update();
+    public Player addPlayer(String username, MobileContainer client) {
+        Player p = new Player(username, client, this.gameId);
+        this.players.add(p);
+        this.desktopContainer.update();
         return p;
     }
 
-    public static List<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public static void handleCommand(BaseCommand command) {
-        if (command instanceof ContinueCommand && (Game.state == GameState.SHOWING_SCORES || Game.state == GameState.NEW)) {
-            Collections.shuffle(Game.generators);
+    public void handleCommand(BaseCommand command) {
+        if (command instanceof ContinueCommand && (this.state == GameState.SHOWING_SCORES || this.state == GameState.NEW)) {
+            Collections.shuffle(this.generators);
             selectedGenerators = generators.stream().filter(f -> f.included).toList();
             loadNextMiniGame();
-        } else if (command instanceof ContinueCommand && Game.state == GameState.SHOWING_TUTORIAL) {
-            Game.desktopContainer.switchToView(Game.currentMiniGame.getDesktopView());
+        } else if (command instanceof ContinueCommand && this.state == GameState.SHOWING_TUTORIAL) {
+            this.desktopContainer.switchToView(this.currentMiniGame.getDesktopView());
         } else {
-            if (Game.currentMiniGame != null) {
-                Game.currentMiniGame.handleCommand(command);
+            if (this.currentMiniGame != null) {
+                this.currentMiniGame.handleCommand(command);
             }
         }
     }
 
-    public static void loadNextMiniGame(){
+    public void loadNextMiniGame(){
         clearPlayersRoundInfo();
-        Game.currentGameCtr++;
-        Game.state = GameState.SHOWING_TUTORIAL;
-        Game.currentMiniGame = Game.selectedGenerators.get(Game.currentGameCtr % selectedGenerators.size()).build();
-        Game.desktopContainer.switchToView(new TutorialView(Game.currentMiniGame.getTutorial()));
-        Game.players.forEach(p -> p.getClient().switchToView(MobileView.WAIT_VIEW));
+        this.currentGameCtr++;
+        this.state = GameState.SHOWING_TUTORIAL;
+        this.currentMiniGame = this.selectedGenerators.get(this.currentGameCtr % selectedGenerators.size()).build();
+        this.desktopContainer.switchToView(new TutorialView(this, this.currentMiniGame.getTutorial()));
+        this.players.forEach(p -> p.getClient().switchToView(MobileView.WAIT_VIEW));
     }
 
-    public static void clearPlayersRoundInfo() {
+    public void clearPlayersRoundInfo() {
         for (Player player : players) {
             player.clearRoundInfo();
         }
     }
 
-    public static void updateAllScreens() {
-        Game.desktopContainer.update();
+    public void updateAllScreens() {
+        this.desktopContainer.update();
         players.forEach(p -> p.getClient().update());
     }
 
+    public boolean allPlayersAnswered() {
+        for (Player player : this.getPlayers()) {
+            if (!player.hasAnswered) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public DesktopContainer getContainer() {
+        return desktopContainer;
+    }
+
+    public void switchAllMobileClientsToView(Function<Player, BaseView> vGenerator) {
+        getPlayers().forEach(p -> {
+            p.getClient().switchToView(vGenerator.apply(p));
+        });
+    }
 
 }

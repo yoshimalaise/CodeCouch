@@ -1,5 +1,6 @@
 package com.example.application.minigames.trueOrFalse;
 
+import com.example.application.bl.Game;
 import com.example.application.bl.commands.BaseCommand;
 import com.example.application.bl.commands.StringAnswerCommand;
 import com.example.application.minigames.BaseMiniGame;
@@ -19,10 +20,12 @@ public class TrueOrFalseGame implements BaseMiniGame {
 
     private BaseChapter chapter;
 
+    private Game game;
 
 
-    public TrueOrFalseGame(BaseChapter chapter) {
+    public TrueOrFalseGame(BaseChapter chapter, Game game) {
         this.chapter = chapter;
+        this.game = game;
     }
 
     @Override
@@ -43,6 +46,11 @@ public class TrueOrFalseGame implements BaseMiniGame {
             this.setupGame();
         }
         return this.view;
+    }
+
+    @Override
+    public Game getGame() {
+        return game;
     }
 
     private void setupGame() {
@@ -109,7 +117,7 @@ public class TrueOrFalseGame implements BaseMiniGame {
             }
         }
 
-        this.view = new TrueOrFalseView(chapter.getChapterName(), rounds);
+        this.view = new TrueOrFalseView(chapter.getChapterName(), rounds, game);
     }
 
 }

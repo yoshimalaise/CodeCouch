@@ -1,5 +1,6 @@
 package com.example.application.views.desktop;
 
+import com.example.application.bl.Game;
 import com.example.application.model.GameTutorial;
 import com.example.application.views.main.BaseView;
 import com.vaadin.flow.component.html.Header;
@@ -9,7 +10,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 public class TutorialView extends BaseView {
 
-    public TutorialView(GameTutorial tut) {
+    public TutorialView(Game game, GameTutorial tut) {
+        super(game);
         setAlignItems(Alignment.CENTER);
         setHorizontalComponentAlignment(Alignment.CENTER);
 

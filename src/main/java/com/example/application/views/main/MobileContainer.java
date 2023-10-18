@@ -9,25 +9,21 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.PreserveOnRefresh;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 
 import java.util.ArrayList;
 import java.util.function.Function;
 
 @PageTitle("Main")
-@Route(value = "/mobile")
+@Route(value = "/mobile") // with url parameter it will be ('/mobile/<gameId>')
 @PreserveOnRefresh
-public class MobileContainer extends VerticalLayout {
-
-    private static final ArrayList<MobileContainer> allMobiles = new ArrayList<>();
+public class MobileContainer extends VerticalLayout implements HasUrlParameter<String> {
 
     private BaseView currentView;
+    public String gameId;
     public Player player;
 
     public MobileContainer() {
-        allMobiles.add(this);
         this.switchToView(MobileView.JOIN_VIEW);
     }
 
@@ -68,8 +64,8 @@ public class MobileContainer extends VerticalLayout {
         }
     }
 
-    public static void switchAllMobileClientsToView(Function<Player,BaseView> vGenerator){
-        MobileContainer.allMobiles.forEach(m -> {
-            try {m.switchToView(vGenerator.apply(m.player));} catch (Exception e) {} });
+    @Override
+    public void setParameter(BeforeEvent beforeEvent, String gameId) {
+        this.gameId = gameId;
     }
 }

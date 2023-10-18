@@ -1,6 +1,7 @@
 package com.example.application.views.mobile;
 
 import com.example.application.bl.Game;
+import com.example.application.bl.Server;
 import com.example.application.bl.commands.StringAnswerCommand;
 import com.example.application.model.Player;
 import com.example.application.views.main.BaseView;
@@ -13,6 +14,7 @@ import com.vaadin.flow.component.textfield.NumberField;
 
 public class NumberInputView extends BaseView {
     public NumberInputView(Player p) {
+        super(Server.findGameById(p.gameId));
         IntegerField numberField = new IntegerField("Your answer: ");
         this.setAlignItems(Alignment.CENTER);
         add(numberField);
@@ -20,7 +22,7 @@ public class NumberInputView extends BaseView {
         btn.addClickListener(e -> {
             removeAll();
             add(new Span("Waiting for others to finish"));
-            Game.handleCommand(new StringAnswerCommand(p, numberField.getValue() + ""));
+            Server.handleCommand(new StringAnswerCommand(p, numberField.getValue() + ""));
         });
         add(btn);
         numberField.focus();

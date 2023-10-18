@@ -1,6 +1,7 @@
 package com.example.application.views.mobile;
 
 import com.example.application.bl.Game;
+import com.example.application.bl.Server;
 import com.example.application.bl.commands.ContinueCommand;
 import com.example.application.model.BaseGameFactory;
 import com.example.application.model.Player;
@@ -24,14 +25,18 @@ public class SessionSetupView extends BaseView {
 
     VirtualList<BaseGameFactory> minigamesList;
 
+    private Game g;
+
     public SessionSetupView(Player p) {
+        super(Server.findGameById(p.gameId));
         this.player = p;
 
         Span lblName = new Span(p.getName());
-        lblPlayerCount = new Span(Game.getPlayers().size() + (Game.getPlayers().size() > 1 ? " players" : " player"));
+        this.g = Server.findGameById(p.gameId);
+        lblPlayerCount = new Span(g.getPlayers().size() + (g.getPlayers().size() > 1 ? " players" : " player"));
 
         btnContinue = new Button("Start Game");
-        btnContinue.addClickListener(b -> Game.handleCommand(new ContinueCommand()));
+        btnContinue.addClickListener(b -> g.handleCommand(new ContinueCommand(p)));
 
         // prepare the list of all the generators
         minigamesList = new VirtualList<>();
@@ -41,11 +46,11 @@ public class SessionSetupView extends BaseView {
             c.setValue(factory.included);
             c.addValueChangeListener(e -> {
                 factory.included = e.getValue();
-                Game.updateAllScreens();
+                g.updateAllScreens();
             });
             return c;
         }));
-        minigamesList.setItems(Game.generators);
+        minigamesList.setItems(g.generators);
 
         add(lblName, lblPlayerCount, minigamesList, btnContinue);
     }
@@ -53,8 +58,8 @@ public class SessionSetupView extends BaseView {
     @Override
     public void update() {
         this.updateUIInLock(() -> {
-            lblPlayerCount.setText(Game.getPlayers().size() + (Game.getPlayers().size() > 1 ? " players" : " player"));
-            minigamesList.setItems(Game.generators);
+            lblPlayerCount.setText(g.getPlayers().size() + (g.getPlayers().size() > 1 ? " players" : " player"));
+            minigamesList.setItems(g.generators);
         });
     }
 }
