@@ -31,6 +31,9 @@ public class ChapterSeven extends BaseChapter {
             add("The DOM parser must read and parse the entire document before it can be manipulated.");
             add("XML Transformations can be used to create websites by converting XML to XHTML.");
             add("XML-RPC is a technology that makes remote procedure calls possible between systems written in different programming languages.");
+            add("The eXtensible Information Management Architecture (XIMA) provides a generic XML database interface instead of interacting with an object database directly.");
+            add("The eXtensible Information Management Architecture (XIMA) can select an appropriate XSLT stylesheet based on the User-Agent HTTP header field.");
+            add("Scalable Vector Graphics (SVG) are an application of XML.");
         }};
     }
 
@@ -50,6 +53,8 @@ public class ChapterSeven extends BaseChapter {
             add("The DOM parser is suited for large applications because of its low memory usage");
             add("A DOM Parser needs less memory than SAX parser");
             add("XML-RPC is often faster than specialised protocols that are used in closed networks.");
+            add("The eXtensible Information Management Architecture (XIMA) is based on relational database technology.");
+            add("The eXtensible Information Management Architecture (XIMA) is built on top of CGI technology.");
         }};
     }
 }

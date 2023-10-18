@@ -24,6 +24,7 @@ public abstract class MiniGameFactoryCollection {
                     add(new TrueOrFalseGameFactory<>(ChapterFour.NAME, ChapterFour::new, game));
                     add(new TrueOrFalseGameFactory<>(ChapterFive.NAME, ChapterFive::new, game));
                     add(new TrueOrFalseGameFactory<>(ChapterSix.NAME, ChapterSix::new, game));
+                    add(new TrueOrFalseGameFactory<>(ChapterSeven.NAME, ChapterSeven::new, game));
                 }}).stream()
                 .sorted(Comparator.comparing(f -> f.name))
                 .collect(Collectors.toCollection(ArrayList::new));
